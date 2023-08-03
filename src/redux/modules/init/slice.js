@@ -13,6 +13,12 @@ const initSlice = createSlice({
     setSidebarShow: (state) => {
       state.sidebarShow = !state.sidebarShow
     },
+    initApp: (state) => {
+      state.loading = true
+    },
+    initAppCompleted: (state) => {
+      state.loading = false
+    },
   },
 })
 
@@ -27,5 +33,24 @@ export function useToggleSidebar() {
   return { sidebarShow, toggleSidebar }
 }
 
-export const { setSidebarShow } = initSlice.actions
+export function useInit() {
+  const initState = useSelector((state) => state.init)
+  const dispatch = useDispatch()
+
+  const dispatchInit = useCallback(() => {
+    dispatch(initApp())
+  }, [dispatch])
+
+  const dispatchInitCompleted = useCallback(() => {
+    dispatch(initAppCompleted())
+  }, [dispatch])
+
+  return {
+    initState,
+    dispatchInit,
+    dispatchInitCompleted,
+  }
+}
+
+export const { setSidebarShow, initApp, initAppCompleted } = initSlice.actions
 export default initSlice.reducer

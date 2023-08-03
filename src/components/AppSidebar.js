@@ -8,7 +8,7 @@ import { sygnet } from 'src/assets/brand/sygnet'
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
 import navigation from '../_nav'
-import { useToggleSidebar } from '../redux/modules/init'
+import { useToggleSidebar } from '../redux/modules/init/slice'
 
 const AppSidebar = () => {
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)

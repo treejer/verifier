@@ -8,6 +8,7 @@ We have extended the functionality of the original CoreUI template by adding web
 - Axios - Axios is a simple promise based HTTP client for the browser and node.js. Axios provides a simple to use library in a small package with a very extensible interface.
 - Redux - For state management.
 - Redux Saga - For managing side effects, such as fetching blockchain data.
+- Multichain config - configs are set by chain.
 
 The CoreUI template already utilizes React and Bootstrap to provide a robust admin template with a wide range of UI components.
 

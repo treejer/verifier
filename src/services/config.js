@@ -16,7 +16,7 @@ const blockChainConfig = {
     },
     base_url: process.env.REACT_APP_MAIN_MATIC_BASE_URL,
   },
-  1: {
+  5: {
     contracts: {
       TreeFactory: {
         address: 'b',

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { CButton } from '@coreui/react'
 import { RainbowKitProvider, ConnectButton } from '@rainbow-me/rainbowkit'
 import { configureChains, useAccount, useNetwork } from 'wagmi'
-import { mainnet, polygon, polygonMumbai } from 'wagmi/chains'
+import { goerli, polygon, polygonMumbai } from 'wagmi/chains'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { useGetNonce } from '../../redux/modules/userNonce'
 import { useUserSign } from '../../redux/modules/userSign'
@@ -10,7 +10,7 @@ import { publicProvider } from 'wagmi/providers/public'
 import '@rainbow-me/rainbowkit/styles.css'
 
 const apiKey = process.env.REACT_APP_ALCHEMY_ID
-const supportedChains = [mainnet, polygon, polygonMumbai]
+const supportedChains = [goerli, polygon, polygonMumbai]
 const providers = [alchemyProvider({ apiKey }), publicProvider()]
 const { chains } = configureChains(supportedChains, providers)
 

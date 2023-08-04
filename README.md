@@ -1,21 +1,9 @@
-# CoreUI Web3 React Admin Template
-This project is a web3 version of the CoreUI React admin template. It is a fork of the CoreUI admin template built with React.
-
-Overview
-We have extended the functionality of the original CoreUI template by adding web3 capabilities using the following libraries:
-
-- 🌈RainBowKit - RainbowKit is a React library that makes it easy to add wallet connection to your dapp. It's intuitive, responsive and customizable.
-- Axios - Axios is a simple promise based HTTP client for the browser and node.js. Axios provides a simple to use library in a small package with a very extensible interface.
-- Redux - For state management.
-- Redux Saga - For managing side effects, such as fetching blockchain data.
-- Multichain config - configs are set by chain.
-
-The CoreUI template already utilizes React and Bootstrap to provide a robust admin template with a wide range of UI components.
+# Verifier Panel
 
 ## Quick Start
 To get started with the project:
 
-Clone the repository: git clone https://github.com/treejer/coreui-free-react-admin-template-web3
+Clone the repository: git clone https://github.com/treejer/verifier
 
 ### Installation
 
@@ -67,14 +55,10 @@ Duplicate the environment file and modify its variable values.
 cp .env.example .env
 ```
 
-## Documentation
-
-The documentation for the CoreUI Admin Template is hosted at our website [CoreUI for React](https://coreui.io/react/)
-
 
 ### About
 
-This project is built and maintained by the [Treejer Team](https://github.com/treejer). The source code is available on [GitHub]([https://github.com/treejer](https://github.com/treejer/coreui-free-react-admin-template-web3)).
+This project is built and maintained by the [Treejer Team](https://github.com/treejer). The source code is available on [GitHub]([https://github.com/treejer/verifier]).
 Please feel free to reach out if you have any questions or need further assistance. We are happy to help!
 
 ## Documentation

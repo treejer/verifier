@@ -1,4 +1,4 @@
-# Verifier Panel
+# 🌳 Treejer Verifier Panel
 
 ## Quick Start
 To get started with the project:

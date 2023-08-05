@@ -3,13 +3,13 @@
 import React from 'react'
 import { getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
-import { mainnet, polygon, polygonMumbai } from 'wagmi/chains'
+import { goerli, polygon, polygonMumbai } from 'wagmi/chains'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
 import RainBowButton from './button'
 
 const { chains, publicClient } = configureChains(
-  [mainnet, polygon, polygonMumbai],
+  [goerli, polygon, polygonMumbai],
   [alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_ID }), publicProvider()],
 )
 

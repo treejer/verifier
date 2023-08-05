@@ -3,8 +3,7 @@ import { useSelector } from 'react-redux'
 import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { AppSidebarNav } from './AppSidebarNav'
-import { logoNegative } from 'src/assets/brand/logo-negative'
-import { sygnet } from 'src/assets/brand/sygnet'
+import { logo } from 'src/assets/brand/logo'
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
 import navigation from '../_nav'
@@ -15,17 +14,20 @@ const AppSidebar = () => {
   const { sidebarShow, toggleSidebar } = useToggleSidebar()
 
   return (
-    <CSidebar position="fixed" unfoldable={unfoldable} visible={sidebarShow}>
-      <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
-        <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
+    <CSidebar
+      position="fixed"
+      unfoldable={unfoldable}
+      className={sidebarShow ? 'margin-left-0' : 'collapsed-menu'}
+    >
+      <CSidebarBrand to="/">
+        <CIcon className="sidebar-brand-full" icon={logo} height={100} />
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
           <AppSidebarNav items={navigation} />
         </SimpleBar>
       </CSidebarNav>
-      <CSidebarToggler className="d-none d-lg-flex" onClick={toggleSidebar} />
+      <CSidebarToggler onClick={toggleSidebar} />
     </CSidebar>
   )
 }

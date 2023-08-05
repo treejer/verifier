@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
+import debounce from 'lodash.debounce'
+import merge from 'lodash.merge'
 import { CButton } from '@coreui/react'
-import { RainbowKitProvider, ConnectButton } from '@rainbow-me/rainbowkit'
+import { RainbowKitProvider, ConnectButton, lightTheme } from '@rainbow-me/rainbowkit'
 import { configureChains, useAccount, useNetwork } from 'wagmi'
-import { mainnet, polygon, polygonMumbai } from 'wagmi/chains'
+import { goerli, polygon, polygonMumbai } from 'wagmi/chains'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { useGetNonce } from '../../redux/modules/userNonce'
 import { useUserSign } from '../../redux/modules/userSign'
@@ -10,9 +12,15 @@ import { publicProvider } from 'wagmi/providers/public'
 import '@rainbow-me/rainbowkit/styles.css'
 
 const apiKey = process.env.REACT_APP_ALCHEMY_ID
-const supportedChains = [mainnet, polygon, polygonMumbai]
+const supportedChains = [goerli, polygon, polygonMumbai]
 const providers = [alchemyProvider({ apiKey }), publicProvider()]
 const { chains } = configureChains(supportedChains, providers)
+
+const treejerTheme = merge(lightTheme(), {
+  colors: {
+    accentColor: '#67B68C',
+  },
+})
 
 const RainbowButton = () => {
   const { address } = useAccount()
@@ -36,15 +44,21 @@ const RainbowButton = () => {
     }
   }
 
+  const debouncedSignIn = debounce(handleSignInWallet, 2000)
+
   const showSignInWalletButton = !userToken && address && !chain.unsupported
   return (
     <>
       {showSignInWalletButton && (
-        <CButton color="light" className="mx-2" onClick={handleSignInWallet} disabled={isLoading}>
+        <CButton color="light" className="mx-2" onClick={debouncedSignIn} disabled={isLoading}>
           {isLoading ? 'Signing In...' : 'Sign In Wallet'}
         </CButton>
       )}
-      <RainbowKitProvider chains={chains} initialChain={process.env.REACT_APP_DEFAULT_CHAIN_ID}>
+      <RainbowKitProvider
+        chains={chains}
+        initialChain={process.env.REACT_APP_DEFAULT_CHAIN_ID}
+        theme={treejerTheme}
+      >
         <ConnectButton label="Connect Wallet" />
       </RainbowKitProvider>
     </>

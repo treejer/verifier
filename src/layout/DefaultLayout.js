@@ -3,7 +3,7 @@ import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/inde
 import { useToggleSidebar } from '../redux/modules/init/slice'
 
 const DefaultLayout = () => {
-  const { sidebarShow, toggleSidebar } = useToggleSidebar()
+  const { sidebarShow } = useToggleSidebar()
   return (
     <div>
       <AppSidebar />

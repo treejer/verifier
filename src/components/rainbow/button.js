@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import debounce from 'lodash.debounce'
 import merge from 'lodash.merge'
 import { CButton } from '@coreui/react'
 import { RainbowKitProvider, ConnectButton, lightTheme } from '@rainbow-me/rainbowkit'
@@ -43,11 +44,13 @@ const RainbowButton = () => {
     }
   }
 
+  const debouncedSignIn = debounce(handleSignInWallet, 2000)
+
   const showSignInWalletButton = !userToken && address && !chain.unsupported
   return (
     <>
       {showSignInWalletButton && (
-        <CButton color="light" className="mx-2" onClick={handleSignInWallet} disabled={isLoading}>
+        <CButton color="light" className="mx-2" onClick={debouncedSignIn} disabled={isLoading}>
           {isLoading ? 'Signing In...' : 'Sign In Wallet'}
         </CButton>
       )}

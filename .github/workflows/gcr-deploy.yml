@@ -120,8 +120,8 @@ jobs:
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v1
         with:
-          service: $SERVICE_NAME
-          region: $RUN_REGION
+          service: "$SERVICE_NAME"
+          region: "$RUN_REGION"
           # NOTE: If using a pre-built image, update the image name here
           image: "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
           # NOTE: You can also set env variables here:

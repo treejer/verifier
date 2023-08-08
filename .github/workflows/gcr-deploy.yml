@@ -52,22 +52,22 @@ jobs:
 
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@main
 
       - name: Download Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@main
         with:
           name: build
-          path: .docker/build
+          path: build
 
-      - name: Setup GCloud Auth
-        id: auth
-        uses: google-github-actions/auth@v1
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
         with:
-          credentials_json: ${{ secrets.GCR_SA_KEY }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+          credentials_json: '${{ secrets.GCR_SA_KEY }}'
+          project_id: '${{ secrets.GCR_PROJECT }}'
+    
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
 
       # Build and push image to Google Container Registry
       - name: Build & Push
@@ -75,7 +75,7 @@ jobs:
           gcloud builds submit \
             --quiet \
             --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
-        working-directory: .docker
+        working-directory: build
 
       # Deploy image to Cloud Run
       - name: Deploy GCR

@@ -88,13 +88,19 @@ jobs:
       #     context: ./build
       #     target: build
 
-      - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
-        with:
-          registry: gcr.io
-          project_id: "$PROJECT_ID"
-          image_name: verifier
-          image_tag: "$SERVICE_NAME-$GITHUB_SHA, $SERVICE_NAME, $GITHUB_SHA"
-          dockerfile: ./Dockerfile    
+      - name: 'Gcloud auth configure-docker'
+        run: 'gcloud auth configure-docker'
+
+      - name: 'Docker push to GCR'
+        run: 'docker push gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA'
+
+      # - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+      #   with:
+      #     registry: gcr.io
+      #     project_id: "$PROJECT_ID"
+      #     image_name: verifier
+      #     image_tag: "$SERVICE_NAME-$GITHUB_SHA, $SERVICE_NAME, $GITHUB_SHA"
+      #     dockerfile: ./Dockerfile    
 
 
       # Deploy image to Cloud Run
@@ -109,7 +115,7 @@ jobs:
        
       - name: Deploy to Cloud Run
         id: deploy
-        uses: google-github-actions/deploy-cloudrun@v0
+        uses: google-github-actions/deploy-cloudrun@v1
         with:
           service: $SERVICE_NAME
           region: $RUN_REGION

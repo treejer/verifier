@@ -36,24 +36,18 @@ jobs:
         env:
           CI: true
 
-      - name: create env file
-        run: |
-            touch .env
-            echo "ENGINE_API_KEY=${{ secrets.ENGINE_API_KEY }}
-            PORT=${{ secrets.PORT }}
-            CHOKIDAR_USEPOLLING=${{ secrets.CHOKIDAR_USEPOLLING }}
-            REACT_APP_WALLET_CONNECT_PROJECT_ID='${{ secrets.REACT_APP_WALLET_CONNECT_PROJECT_ID }}'
-            REACT_APP_ALCHEMY_ID='${{ secrets.REACT_APP_ALCHEMY_ID }}'
-            REACT_APP_DEFAULT_CHAIN_ID=${{ secrets.REACT_APP_DEFAULT_CHAIN_ID }}
-            REACT_APP_DEFAULT_BASE_URL='${{ secrets.REACT_APP_DEFAULT_BASE_URL }}'
-            REACT_APP_MAIN_MATIC_BASE_URL='${{ secrets.REACT_APP_MAIN_MATIC_BASE_URL }}'
-            REACT_APP_TEST_MATIC_BASE_URL='${{ secrets.REACT_APP_TEST_MATIC_BASE_URL }}'
-            REACT_APP_MAIN_ETHERIUM_BASE_URL='${{ secrets.REACT_APP_MAIN_ETHERIUM_BASE_URL }}' " >> .env    
-
       - name: Build Development
         run: npm run build
         env:
-          CI: true  
+          PORT: ${{ env.PORT }}
+          CHOKIDAR_USEPOLLING: ${{ env.CHOKIDAR_USEPOLLING }}
+          REACT_APP_WALLET_CONNECT_PROJECT_ID: "${{ env.REACT_APP_WALLET_CONNECT_PROJECT_ID }}"
+          REACT_APP_ALCHEMY_ID: "${{ env.REACT_APP_ALCHEMY_ID }}"
+          REACT_APP_DEFAULT_CHAIN_ID: ${{ env.REACT_APP_DEFAULT_CHAIN_ID }}
+          REACT_APP_DEFAULT_BASE_URL: "${{ env.REACT_APP_DEFAULT_BASE_URL }}"
+          REACT_APP_MAIN_MATIC_BASE_URL: "${{ env.REACT_APP_MAIN_MATIC_BASE_URL }}"
+          REACT_APP_TEST_MATIC_BASE_URL: "${{ env.REACT_APP_TEST_MATIC_BASE_URL }}"
+          REACT_APP_MAIN_ETHERIUM_BASE_URL: "${{ env.REACT_APP_MAIN_ETHERIUM_BASE_URL }}"
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v3

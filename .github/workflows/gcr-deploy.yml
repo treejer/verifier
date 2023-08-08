@@ -91,9 +91,9 @@ jobs:
       - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
         with:
           registry: gcr.io
-          project_id: $PROJECT_ID
-          image_name: $SERVICE_NAME
-          image_tag: $SERVICE_NAME-$GITHUB_SHA, $SERVICE_NAME, $GITHUB_SHA
+          project_id: "$PROJECT_ID"
+          image_name: "$SERVICE_NAME"
+          image_tag: "$SERVICE_NAME-$GITHUB_SHA, $SERVICE_NAME, $GITHUB_SHA"
           dockerfile: ./Dockerfile    
 
 

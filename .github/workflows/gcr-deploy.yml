@@ -69,8 +69,46 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v1'
 
-      - id: 'deploy'
-        uses: 'google-github-actions/deploy-cloudrun@v1'
+      # Build and push image to Google Container Registry
+      # - name: Build & Push
+      #   run: |-
+      #     gcloud builds submit \
+      #       --quiet \
+      #       --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
+      #       --file "./Dockerfile"
+      #   working-directory: build
+      - name: Building and pushing the image
+        uses: ./
         with:
-          service: '$SERVICE_NAME'
-          image: 'gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA'
+          registry: gcr.io
+          project_id: $PROJECT_ID
+          image_name: $SERVICE_NAME
+          image_tag: $SERVICE_NAME-$GITHUB_SHA, $SERVICE_NAME, $GITHUB_SHA
+          dockerfile: ./Dockerfile
+          context: ./build
+          target: build
+
+      # Deploy image to Cloud Run
+      # - name: Deploy GCR
+      #   run: |-
+      #     gcloud run deploy "$SERVICE_NAME" \
+      #       --quiet \
+      #       --region "$RUN_REGION" \
+      #       --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
+      #       --platform "managed" \
+      #       --allow-unauthenticated
+       
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v0
+        with:
+          service: $SERVICE_NAME
+          region: $RUN_REGION
+          # NOTE: If using a pre-built image, update the image name here
+          image: "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
+          # NOTE: You can also set env variables here:
+          #  env_vars: |
+          #  NODE_ENV=production
+          #  TOKEN_EXPIRE=6400
+
+            

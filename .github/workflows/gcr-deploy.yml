@@ -77,14 +77,25 @@ jobs:
       #       --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
       #       --file "./Dockerfile"
       #   working-directory: build
-      - name: Building and pushing the image
-        uses: ./
+      # - name: Building and pushing the image
+      #   uses: ./
+      #   with:
+      #     registry: gcr.io
+      #     project_id: $PROJECT_ID
+      #     image_name: $SERVICE_NAME
+      #     image_tag: $SERVICE_NAME-$GITHUB_SHA, $SERVICE_NAME, $GITHUB_SHA
+      #     dockerfile: ./Dockerfile
+      #     context: ./build
+      #     target: build
+
+      - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
         with:
           registry: gcr.io
           project_id: $PROJECT_ID
           image_name: $SERVICE_NAME
           image_tag: $SERVICE_NAME-$GITHUB_SHA, $SERVICE_NAME, $GITHUB_SHA
-          dockerfile: ./Dockerfile
+          dockerfile: ./Dockerfile    
+
 
       # Deploy image to Cloud Run
       # - name: Deploy GCR

@@ -1,6 +1,6 @@
-# Contributing to CoreUI
+# Contributing to Treejer-Verifier
 
-Looking to contribute something to CoreUI? **Here's how you can help.**
+Looking to contribute something to Treejer-Verifier? **Here's how you can help.**
 
 Please take a moment to review this document in order to make the contribution process easy and effective for everyone involved.
 
@@ -9,7 +9,7 @@ patches and features.
 
 ## Using the issue tracker
 
-The [issue tracker](https://github.com/coreui/coreui-free-react-admin-template/issues) is
+The [issue tracker](https://github.com/treejer/verifier/issues) is
 the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests)
 and [submitting pull requests](#pull-requests), but please respect the following
 restrictions:
@@ -89,11 +89,11 @@ included in the project:
 
    ```bash
    # Clone your fork of the repo into the current directory
-   git clone https://github.com/<your-username>/coreui-react.git
+   git clone https://github.com/<your-username>/verifier.git
    # Navigate to the newly cloned directory
-   cd coreui
+   cd verifier
    # Assign the original repo to a remote called "upstream"
-   git remote add upstream https://github.com/coreui/coreui-react.git
+   git remote add upstream https://github.com/treejer/verifier.git
    ```
 
 2. If you cloned a while ago, get the latest changes from upstream:

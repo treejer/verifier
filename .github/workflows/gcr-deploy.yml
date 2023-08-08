@@ -28,11 +28,11 @@ jobs:
         uses: actions/cache@master
         with:
           path: node_modules
-          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+          key: nodeModules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             nodeModules-
       - name: Install dependencies
-        run: npm install --production=true
+        run: npm install --omit=dev
         env:
           CI: true
 

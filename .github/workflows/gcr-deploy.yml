@@ -92,7 +92,7 @@ jobs:
         with:
           registry: gcr.io
           project_id: "$PROJECT_ID"
-          image_name: "$SERVICE_NAME"
+          image_name: verifier
           image_tag: "$SERVICE_NAME-$GITHUB_SHA, $SERVICE_NAME, $GITHUB_SHA"
           dockerfile: ./Dockerfile    
 

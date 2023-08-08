@@ -17,20 +17,14 @@ jobs:
 
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: Setup Node.js (NPM)
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: 18
+          cache: 'npm'
 
-      - name: Use cached node_modules
-        uses: actions/cache@master
-        with:
-          path: node_modules
-          key: nodeModules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            nodeModules-
       - name: Install dependencies
         run: npm install --omit=dev
         env:
@@ -40,7 +34,7 @@ jobs:
         run: npm run build
 
       - name: Archive Production Artifact
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v3
         with:
           name: build
           path: build
@@ -52,22 +46,22 @@ jobs:
 
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: Download Artifact
-        uses: actions/download-artifact@main
+        uses: actions/download-artifact@v3
         with:
           name: build
           path: .docker/build
 
       - name: Setup GCloud Auth
         id: auth
-        uses: google-github-actions/auth@v0.4.0
+        uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCR_SA_KEY }}
 
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.2.1
+        uses: google-github-actions/setup-gcloud@v1
 
       # Build and push image to Google Container Registry
       - name: Build & Push

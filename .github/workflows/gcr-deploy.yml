@@ -85,8 +85,6 @@ jobs:
           image_name: $SERVICE_NAME
           image_tag: $SERVICE_NAME-$GITHUB_SHA, $SERVICE_NAME, $GITHUB_SHA
           dockerfile: ./Dockerfile
-          context: ./build
-          target: build
 
       # Deploy image to Cloud Run
       # - name: Deploy GCR

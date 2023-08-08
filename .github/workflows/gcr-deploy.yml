@@ -88,6 +88,9 @@ jobs:
       #     context: ./build
       #     target: build
 
+      - name: 'Docker build'
+        run: 'docker build -t gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA .'
+
       - name: 'Gcloud auth configure-docker'
         run: 'gcloud auth configure-docker'
 

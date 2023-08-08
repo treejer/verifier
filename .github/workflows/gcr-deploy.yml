@@ -69,21 +69,8 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v1'
 
-      # Build and push image to Google Container Registry
-      - name: Build & Push
-        run: |-
-          gcloud builds submit \
-            --quiet \
-            --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
-            --file "./Dockerfile"
-        working-directory: build
-
-      # Deploy image to Cloud Run
-      - name: Deploy GCR
-        run: |-
-          gcloud run deploy "$SERVICE_NAME" \
-            --quiet \
-            --region "$RUN_REGION" \
-            --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
-            --platform "managed" \
-            --allow-unauthenticated
+      - id: 'deploy'
+        uses: 'google-github-actions/deploy-cloudrun@v1'
+        with:
+          service: '$SERVICE_NAME'
+          image: 'gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA'

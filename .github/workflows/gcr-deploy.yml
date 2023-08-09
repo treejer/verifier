@@ -20,12 +20,17 @@ jobs:
         id: set-vars
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "::set-output name=SERVICE_NAME::verifier"
-            echo "::set-output name=ENVIRONMENT::MAIN"
+            echo "SERVICE_NAME=verifier" >> $GITHUB_ENV
+            echo "ENVIRONMENT=MAIN" >> $GITHUB_ENV
           else
-            echo "::set-output name=SERVICE_NAME::verifier-dev"
-            echo "::set-output name=ENVIRONMENT::DEV"
+            echo "SERVICE_NAME=verifier-dev" >> $GITHUB_ENV
+            echo "ENVIRONMENT=DEV" >> $GITHUB_ENV
           fi
+
+      - name: 'Debugging variables'
+        run: |
+          echo "SERVICE_NAME: $SERVICE_NAME"
+          echo "GITHUB_SHA: $GITHUB_SHA"    
 
   build:
     needs: setup

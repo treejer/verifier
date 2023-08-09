@@ -8,7 +8,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCR_PROJECT }}
-  RUN_REGION: europe-west3
+  RUN_REGION: ${{ secrets.GCR_REGION }}
 jobs:
   setup:
     name: Setup Enviroment - ${{ github.ref }}

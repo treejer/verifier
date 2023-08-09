@@ -20,17 +20,20 @@ jobs:
         id: set-vars
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "SERVICE_NAME=verifier" >> $GITHUB_ENV
-            echo "ENVIRONMENT=MAIN" >> $GITHUB_ENV
+            echo "SERVICE_NAME=verifier" >> "$GITHUB_OUTPUT"
+            echo "ENVIRONMENT=MAIN" >> "$GITHUB_OUTPUT"
           else
-            echo "SERVICE_NAME=verifier-dev" >> $GITHUB_ENV
-            echo "ENVIRONMENT=DEV" >> $GITHUB_ENV
+            echo "SERVICE_NAME=verifier-dev" >> "$GITHUB_OUTPUT"
+            echo "ENVIRONMENT=DEV" >> "$GITHUB_OUTPUT"
           fi
 
       - name: 'Debugging variables'
         run: |
           echo "SERVICE_NAME: $SERVICE_NAME"
-          echo "GITHUB_SHA: $GITHUB_SHA"    
+          echo "GITHUB_SHA: $GITHUB_SHA"   
+          
+          echo "SERVICE_NAME: ${{ steps.set-vars.outputs.SERVICE_NAME }}"
+          echo "GITHUB_SHA: ${{ steps.set-vars.outputs.ENVIRONMENT }}"   
 
   build:
     needs: setup
@@ -40,6 +43,12 @@ jobs:
       name: ${{ needs.setup.outputs.ENVIRONMENT }}
 
     steps:
+
+      - name: 'Debugging variables'
+        run: |
+          echo "SERVICE_NAME: ${{ needs.setup.outputs.SERVICE_NAME }}"
+          echo "GITHUB_SHA: $GITHUB_SHA"
+
       - name: Checkout Repo
         uses: actions/checkout@v3
 

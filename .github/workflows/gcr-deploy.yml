@@ -1,19 +1,23 @@
-name: Verifier App Deploy on GCP - Production
+name: Deploy to GCR
 on:
   push:
     branches:
+      - gcpize
+      - dev
       - main
+
 env:
   PROJECT_ID: ${{ secrets.GCR_PROJECT }}
   RUN_REGION: europe-west3
-  SERVICE_NAME: verifier
+  SERVICE_NAME: verifier${{ github.event.ref_name == 'main' && '' || '-dev' }}
+  ENVIRONMENT: ${{ github.event.ref_name == 'main' && 'MAIN' || 'DEV' }}
 
 jobs:
   build:
-    name: Build Verifier App - Production
+    name: Build Verifier App - ${{ env.ENVIRONMENT }}
     runs-on: ubuntu-latest
     environment:
-      name: MAIN
+      name: ${{ env.ENVIRONMENT }}
 
     steps:
       - name: Checkout Repo
@@ -57,7 +61,7 @@ jobs:
           path: build
 
   deploy-gcr:
-    name: Deploy to GCR - Dev
+    name: Deploy to GCR - ${{ env.ENVIRONMENT }}
     needs: build
     runs-on: ubuntu-latest
 

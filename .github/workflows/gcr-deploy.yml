@@ -91,7 +91,7 @@ jobs:
 
       - name: 'Debugging variables'
         run: |
-          echo "SERVICE_NAME: $SERVICE_NAME"
+          echo "SERVICE_NAME: ${{ needs.setup.outputs.SERVICE_NAME }}"
           echo "GITHUB_SHA: $GITHUB_SHA"
 
       - name: Download Artifact
@@ -110,18 +110,18 @@ jobs:
         uses: 'google-github-actions/setup-gcloud@v1'
 
       - name: 'Docker build'
-        run: 'docker build -t gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA .'
+        run: 'docker build -t gcr.io/$PROJECT_ID/${{ needs.setup.outputs.SERVICE_NAME }}:$GITHUB_SHA .'
 
       - name: 'Gcloud auth configure-docker'
         run: 'gcloud auth configure-docker'
 
       - name: 'Docker push to GCR'
-        run: 'docker push gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA'
+        run: 'docker push gcr.io/$PROJECT_ID/${{ needs.setup.outputs.SERVICE_NAME }}:$GITHUB_SHA'
 
       - name: Deploy to Cloud Run
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v1
         with:
-          service: ${{ env.SERVICE_NAME }}
+          service: ${{ needs.setup.outputs.SERVICE_NAME }}
           region: ${{ env.RUN_REGION }}
-          image: 'gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }}'
+          image: 'gcr.io/${{ env.PROJECT_ID }}/${{ needs.setup.outputs.SERVICE_NAME }}:${{ github.sha }}'

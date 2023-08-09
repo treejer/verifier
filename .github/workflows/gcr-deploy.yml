@@ -36,9 +36,6 @@ jobs:
     needs: setup
     name: Build Verifier App - ${{ needs.setup.outputs.ENVIRONMENT }}
     runs-on: ubuntu-latest
-    outputs:
-      SERVICE_NAME: ${{ steps.set-vars.outputs.SERVICE_NAME }}
-      ENVIRONMENT: ${{ steps.set-vars.outputs.ENVIRONMENT }}
     environment:
       name: ${{ needs.setup.outputs.ENVIRONMENT }}
 

@@ -89,6 +89,11 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@main
 
+      - name: 'Debugging variables'
+        run: |
+          echo "SERVICE_NAME: $SERVICE_NAME"
+          echo "GITHUB_SHA: $GITHUB_SHA"
+
       - name: Download Artifact
         uses: actions/download-artifact@main
         with:

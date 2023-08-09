@@ -1,4 +1,4 @@
-name: Deploy to GCR
+name: Deploy Verifier App to GCR
 on:
   push:
     branches:
@@ -11,6 +11,7 @@ env:
   RUN_REGION: europe-west3
 jobs:
   setup:
+    name: Setup Enviroment - ${{ github.ref }}
     runs-on: ubuntu-latest
     outputs:
       SERVICE_NAME: ${{ steps.set-vars.outputs.SERVICE_NAME }}
@@ -27,14 +28,6 @@ jobs:
             echo "ENVIRONMENT=DEV" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: 'Debugging variables'
-        run: |
-          echo "SERVICE_NAME: $SERVICE_NAME"
-          echo "GITHUB_SHA: $GITHUB_SHA"   
-          
-          echo "SERVICE_NAME: ${{ steps.set-vars.outputs.SERVICE_NAME }}"
-          echo "GITHUB_SHA: ${{ steps.set-vars.outputs.ENVIRONMENT }}"   
-
   build:
     needs: setup
     name: Build Verifier App - ${{ needs.setup.outputs.ENVIRONMENT }}
@@ -43,12 +36,6 @@ jobs:
       name: ${{ needs.setup.outputs.ENVIRONMENT }}
 
     steps:
-
-      - name: 'Debugging variables'
-        run: |
-          echo "SERVICE_NAME: ${{ needs.setup.outputs.SERVICE_NAME }}"
-          echo "GITHUB_SHA: $GITHUB_SHA"
-
       - name: Checkout Repo
         uses: actions/checkout@v3
 

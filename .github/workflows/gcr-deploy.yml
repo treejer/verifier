@@ -9,15 +9,33 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCR_PROJECT }}
   RUN_REGION: europe-west3
-  SERVICE_NAME: verifier${{ github.event.ref_name == 'main' && '' || '-dev' }}
-  ENVIRONMENT: ${{ github.event.ref_name == 'main' && 'MAIN' || 'DEV' }}
-
 jobs:
-  build:
-    name: Build Verifier App - ${{ env.ENVIRONMENT }}
+  setup:
     runs-on: ubuntu-latest
+    outputs:
+      SERVICE_NAME: ${{ steps.set-vars.outputs.SERVICE_NAME }}
+      ENVIRONMENT: ${{ steps.set-vars.outputs.ENVIRONMENT }}
+    steps:
+      - name: Set variables
+        id: set-vars
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "::set-output name=SERVICE_NAME::verifier"
+            echo "::set-output name=ENVIRONMENT::MAIN"
+          else
+            echo "::set-output name=SERVICE_NAME::verifier-dev"
+            echo "::set-output name=ENVIRONMENT::DEV"
+          fi
+
+  build:
+    needs: setup
+    name: Build Verifier App - ${{ needs.setup.outputs.ENVIRONMENT }}
+    runs-on: ubuntu-latest
+    outputs:
+      SERVICE_NAME: ${{ steps.set-vars.outputs.SERVICE_NAME }}
+      ENVIRONMENT: ${{ steps.set-vars.outputs.ENVIRONMENT }}
     environment:
-      name: ${{ env.ENVIRONMENT }}
+      name: ${{ needs.setup.outputs.ENVIRONMENT }}
 
     steps:
       - name: Checkout Repo
@@ -61,8 +79,8 @@ jobs:
           path: build
 
   deploy-gcr:
-    name: Deploy to GCR - ${{ env.ENVIRONMENT }}
-    needs: build
+    needs: [setup, build]
+    name: Deploy to GCR - ${{ needs.setup.outputs.ENVIRONMENT }}
     runs-on: ubuntu-latest
 
     steps:

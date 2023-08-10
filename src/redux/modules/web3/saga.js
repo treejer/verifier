@@ -37,5 +37,5 @@ export function* watchCurrentNetwork() {
 }
 
 export function* web3Saga() {
-  yield takeEvery(watchAppNetwrok, watchCurrentNetwork)
+  yield takeEvery(watchAppNetwrok.type, watchCurrentNetwork)
 }

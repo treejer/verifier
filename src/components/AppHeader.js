@@ -10,7 +10,7 @@ const AppHeader = () => {
 
   useEffect(() => {
     dispatchInit()
-  }, [])
+  }, [dispatchInit])
 
   return (
     <CHeader position="sticky" className="mb-4">

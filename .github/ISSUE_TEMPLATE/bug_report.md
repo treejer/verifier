@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Tell us about a bug you may have identified in CoreUI Free React Admin Template.
+about: Tell us about a bug you may have identified in Treejer Verifier Panel.
 title: ''
 labels: ''
 assignees: ''
@@ -9,9 +9,9 @@ assignees: ''
 
 Before opening:
 
-- [Search for duplicate or closed issues](https://github.com/coreui/coreui-free-react-admin-template/issues?utf8=%E2%9C%93&q=is%3Aissue)
+- [Search for duplicate or closed issues](https://github.com/treejer/verifier/issues?utf8=%E2%9C%93&q=is%3Aissue)
 - [Validate](https://html5.validator.nu/) any HTML to avoid common problems
-- Read the [contributing guidelines](https://github.com/coreui/coreui-free-react-admin-template/blob/v4-dev/.github/CONTRIBUTING.md)
+- Read the [contributing guidelines](https://github.com/treejer/verifier/blob/main/.github/CONTRIBUTING.md)
 
 Bug reports must include:
 

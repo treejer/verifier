@@ -67,7 +67,7 @@ $ docker build -t verifier-dev -f ./.docker/dev.Dockerfile ./
 and Run `docker run` to run docker image.
 
 ```bash
-# 
+# docker run for dev and volume mount
 $ docker run -it -p 3000:3000 -v ./src:/app/src verifier-dev
 ```
 

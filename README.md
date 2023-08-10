@@ -33,6 +33,12 @@ $ yarn start
 
 Navigate to [http://localhost:3000](http://localhost:3000). The app will automatically reload if you change any of the source files.
 
+### Env setup
+Duplicate the environment file and modify its variable values.
+```bash
+cp .env.example .env
+```
+
 #### Build
 
 Run `build` to build the project. The build artifacts will be stored in the `build/` directory.
@@ -49,12 +55,21 @@ or
 $ yarn build
 ```
 
-## Env Setup
-Duplicate the environment file and modify its variable values.
+#### Run with Docker
+
+Run `docker build` to build docker image.
+
 ```bash
-cp .env.example .env
+# build docker for dev
+$ docker build -t verifier-dev -f ./.docker/dev.Dockerfile ./
 ```
 
+and Run `docker run` to run docker image.
+
+```bash
+# 
+$ docker run -it -p 3000:3000 -v ./src:/app/src verifier-dev
+```
 
 ### About
 

@@ -7,7 +7,7 @@ const Dashboard = () => {
       <CCard className="mb-4">
         <CCardHeader>
           <h4 id="traffic" className="card-title mb-0">
-            Treejer Dashboard Title
+            Treejer Dashboard
           </h4>
         </CCardHeader>
         <CCardBody>

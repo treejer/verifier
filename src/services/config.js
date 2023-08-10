@@ -31,9 +31,9 @@ const blockChainConfig = {
         abi: '',
       },
     },
-    base_url: process.env.REACT_APP_MAIN_ETHERIUM_BASE_URL,
+    base_url: process.env.REACT_APP_MAIN_GOERLI_BASE_URL,
   },
-  800001: {
+  80001: {
     contracts: {
       TreeFactory: {
         address: 'b',

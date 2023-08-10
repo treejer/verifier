@@ -28,7 +28,7 @@ export function* userNonceSagas() {
 
 export function useGetNonce() {
   const dispatch = useDispatch()
-  const { data: userNonce, ...userNonceState } = useSelector((state) => state.userSign)
+  const { data: userNonce, ...userNonceState } = useSelector((state) => state.userNonce)
 
   const dispatchGetNonce = useCallback(() => {
     const { address } = getAccount()

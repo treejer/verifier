@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for a new feature in CoreUI Free React Admin Template.
+about: Suggest an idea for a new feature in Treejer Verifier Panel.
 title: ''
 labels: feature
 assignees: ''
@@ -9,8 +9,8 @@ assignees: ''
 
 Before opening:
 
-- [Search for duplicate or closed issues](https://github.com/coreui/coreui-free-react-admin-template/issues?utf8=%E2%9C%93&q=is%3Aissue)
-- Read the [contributing guidelines](https://github.com/coreui/coreui-free-react-admin-template/blob/main/.github/CONTRIBUTING.md)
+- [Search for duplicate or closed issues](https://github.com/treejer/verifier/issues?utf8=%E2%9C%93&q=is%3Aissue)
+- Read the [contributing guidelines](https://github.com/treejer/verifier/blob/main/.github/CONTRIBUTING.md)
 
 Feature requests must include:
 

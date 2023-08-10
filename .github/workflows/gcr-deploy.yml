@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - dev
+      - gcpize
       - main
 
 env:
@@ -105,7 +106,7 @@ jobs:
         uses: 'google-github-actions/setup-gcloud@v1'
 
       - name: 'Docker build'
-        run: 'docker build -t gcr.io/$PROJECT_ID/${{ needs.setup.outputs.SERVICE_NAME }}:$GITHUB_SHA .'
+        run: 'docker build -t gcr.io/$PROJECT_ID/${{ needs.setup.outputs.SERVICE_NAME }}:$GITHUB_SHA -f ./.docker/prod.Dockerfile .'
 
       - name: 'Gcloud auth configure-docker'
         run: 'gcloud auth configure-docker'

@@ -4,8 +4,7 @@ WORKDIR /app
 
 COPY ./build ./build
 
-# ---`
-FROM fholzer/nginx-brotli:v1.24.0
+FROM fholzer/nginx-brotli:v1.24.0 as nginx
 
 WORKDIR /etc/nginx
 ADD /nginx/nginx.conf /etc/nginx/nginx.conf

@@ -10,14 +10,22 @@ export function* watchUsers(action) {
   const param = action.payload
   const { base_url } = yield select((state) => state.web3?.config || {})
   const { access_token } = yield select((state) => state.userSign?.data || {})
+  const queryFilter = encodeURIComponent(JSON.stringify(param.filters))
+  const querySort = encodeURIComponent(JSON.stringify(param.sort))
   try {
-    const response = yield apiPlugin.getData(`${base_url}/admin/users/paginate`, {
-      params: param,
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${access_token}`,
+    const response = yield apiPlugin.getData(
+      `${base_url}/admin/users/paginate?filters=${queryFilter}&sort=${querySort}`,
+      {
+        params: {
+          skip: param.skip,
+          limit: param.limit,
+        },
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${access_token}`,
+        },
       },
-    })
+    )
     yield put(actions.loadSuccess(response))
   } catch (e) {
     yield put(actions.loadFailure(e))

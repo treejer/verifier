@@ -1,12 +1,21 @@
 import { useCallback } from 'react'
-import { put, takeEvery, select } from 'redux-saga/effects'
+import { put, takeLatest, select, call } from 'redux-saga/effects'
 import ReduxFetchState from 'redux-fetch-state'
+import { setPatchData, setPatchError, resetPatchState } from '../userPatch'
 import { useDispatch, useSelector } from 'react-redux'
 import apiPlugin from '../../../services/api'
 
 const { actions, actionTypes, reducer } = new ReduxFetchState('userDetail')
 
+const PATCH_USER = 'PATCH_USER'
+const LOAD_USER_DETAIL = 'userDetail/LOAD'
+
+function patchUser(payload) {
+  return { type: PATCH_USER, payload }
+}
+
 export function* watchUserDetail(action) {
+  console.log('------CALL Here-------', action)
   const param = action.payload
   const { base_url } = yield select((state) => state.web3?.config || {})
   const { access_token } = yield select((state) => state.userSign?.data || {})
@@ -26,7 +35,7 @@ export function* watchUserDetail(action) {
         Authorization: `Bearer ${access_token}`,
       }
       try {
-        const fileResponse = yield apiPlugin.getData(fileUrl, {
+        yield apiPlugin.getData(fileUrl, {
           headers,
           responseType: 'blob',
         })
@@ -35,13 +44,50 @@ export function* watchUserDetail(action) {
       }
     }
     yield put(actions.loadSuccess(response))
+    yield put(resetPatchState())
   } catch (e) {
     yield put(actions.loadFailure(e))
+    yield put(resetPatchState())
+  }
+}
+
+function* patchUserDetail(action) {
+  const userId = action.payload.id
+  const actionType = action.payload.action
+  const { base_url } = yield select((state) => state.web3?.config || {})
+  const { access_token } = yield select((state) => state.userSign?.data || {})
+  const data = { userId: userId }
+
+  try {
+    const response = yield apiPlugin.patchData(`${base_url}/admin/${actionType}`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${access_token}`,
+      },
+    })
+    yield put(setPatchData(response))
+  } catch (error) {
+    console.log('err', error)
+    yield put(setPatchError(error))
+  }
+}
+
+function* handleUserAction(action) {
+  console.log('in looooop', action)
+  switch (action.type) {
+    case PATCH_USER:
+      yield call(patchUserDetail, action)
+      break
+    case LOAD_USER_DETAIL:
+      yield call(watchUserDetail, action)
+      break
+    default:
+      break
   }
 }
 
 export function* userDetailSagas() {
-  yield takeEvery(actionTypes.load, watchUserDetail)
+  yield takeLatest([actionTypes.load, PATCH_USER], handleUserAction)
 }
 
 export function useGetUserDetail() {
@@ -56,11 +102,25 @@ export function useGetUserDetail() {
     },
     [dispatch],
   )
-  return { userDetailData, userDetailLoading, dispatchGetUserDetail }
+
+  const dispatchPatchUser = useCallback(
+    (id, action) => {
+      dispatch(patchUser({ id: id, action: action }))
+    },
+    [dispatch],
+  )
+
+  return {
+    userDetailData,
+    userDetailLoading,
+    dispatchPatchUser,
+    dispatchGetUserDetail,
+  }
 }
 
 export {
   reducer as userDetailReducer,
   actions as userDetailActions,
   actionTypes as userDetailActionTypes,
+  patchUser,
 }

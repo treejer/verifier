@@ -47,6 +47,19 @@ class ReactApiPlugin {
       }
     }
   }
+
+  async patchData(url, data, config = {}) {
+    try {
+      const response = await axios.patch(url, data, config)
+      return response.data
+    } catch (error) {
+      if (error.response) {
+        throw new Error(error.response.data.message)
+      } else {
+        throw new Error('Network error')
+      }
+    }
+  }
 }
 
 const apiPluginInstance = new ReactApiPlugin()

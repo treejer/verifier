@@ -193,7 +193,7 @@ const Users = () => {
             <Skeleton count={14} height={25} className="w-100 mb-2" containerClassName="w-100" />
           )}
 
-          {(totalPage > 0 || userList.length > 0) && (
+          {(totalPage > 0 || (userList && userList.length > 0)) && (
             <>
               <Pagination
                 currentPage={param.skip + 1}

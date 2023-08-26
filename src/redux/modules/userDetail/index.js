@@ -7,15 +7,19 @@ import apiPlugin from '../../../services/api'
 
 const { actions, actionTypes, reducer } = new ReduxFetchState('userDetail')
 
+const PATCH_STATUS = 'PATCH_STATUS'
 const PATCH_USER = 'PATCH_USER'
 const LOAD_USER_DETAIL = 'userDetail/LOAD'
 
-function patchUser(payload) {
+function patchUserStatus(payload) {
+  return { type: PATCH_STATUS, payload }
+}
+
+function patchUserInfo(payload) {
   return { type: PATCH_USER, payload }
 }
 
 export function* watchUserDetail(action) {
-  console.log('------CALL Here-------', action)
   const param = action.payload
   const { base_url } = yield select((state) => state.web3?.config || {})
   const { access_token } = yield select((state) => state.userSign?.data || {})
@@ -67,15 +71,13 @@ function* patchUserDetail(action) {
     })
     yield put(setPatchData(response))
   } catch (error) {
-    console.log('err', error)
     yield put(setPatchError(error))
   }
 }
 
 function* handleUserAction(action) {
-  console.log('in looooop', action)
   switch (action.type) {
-    case PATCH_USER:
+    case PATCH_STATUS:
       yield call(patchUserDetail, action)
       break
     case LOAD_USER_DETAIL:
@@ -87,7 +89,7 @@ function* handleUserAction(action) {
 }
 
 export function* userDetailSagas() {
-  yield takeLatest([actionTypes.load, PATCH_USER], handleUserAction)
+  yield takeLatest([actionTypes.load, PATCH_STATUS, PATCH_USER], handleUserAction)
 }
 
 export function useGetUserDetail() {
@@ -105,7 +107,14 @@ export function useGetUserDetail() {
 
   const dispatchPatchUser = useCallback(
     (id, action) => {
-      dispatch(patchUser({ id: id, action: action }))
+      dispatch(patchUserStatus({ id: id, action: action }))
+    },
+    [dispatch],
+  )
+
+  const dispatchPatchUserInfo = useCallback(
+    (id, action) => {
+      dispatch(patchUserInfo({ id: id, action: action }))
     },
     [dispatch],
   )
@@ -114,6 +123,7 @@ export function useGetUserDetail() {
     userDetailData,
     userDetailLoading,
     dispatchPatchUser,
+    dispatchPatchUserInfo,
     dispatchGetUserDetail,
   }
 }
@@ -122,5 +132,6 @@ export {
   reducer as userDetailReducer,
   actions as userDetailActions,
   actionTypes as userDetailActionTypes,
-  patchUser,
+  patchUserStatus,
+  patchUserInfo,
 }

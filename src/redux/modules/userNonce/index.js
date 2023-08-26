@@ -9,7 +9,9 @@ import { userSignActions } from '../userSign'
 const { actions, actionTypes, reducer } = new ReduxFetchState('userNonce')
 
 export function* watchUserNonce(action) {
-  const { base_url } = yield select((state) => state.web3?.config || {})
+  const { base_url } = yield select((state) => {
+    return state.web3?.config || {}
+  })
   const { address } = action.payload
   try {
     const response = yield apiPlugin.getData(`${base_url}/nonce/${address}`)
@@ -29,7 +31,6 @@ export function* userNonceSagas() {
 export function useGetNonce() {
   const dispatch = useDispatch()
   const { data: userNonce, ...userNonceState } = useSelector((state) => state.userNonce)
-
   const dispatchGetNonce = useCallback(() => {
     const { address } = getAccount()
     dispatch(actions.load({ address }))

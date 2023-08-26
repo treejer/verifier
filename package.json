@@ -43,6 +43,7 @@
     "react-loading-skeleton": "3.3.1",
     "react-redux": "8.1.1",
     "react-router-dom": "6.14.0",
+    "react-toastify": "9.1.3",
     "redux": "4.2.1",
     "redux-fetch-state": "0.2.4",
     "redux-persist": "6.0.0",

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import CIcon from '@coreui/icons-react'
 import debounce from 'lodash.debounce'
+import { toast } from 'react-toastify'
 import { cilPencil, cilCaretTop, cilCaretBottom } from '@coreui/icons'
 import { useGetUsers } from '../../redux/modules/users'
 import { useUserSign } from '../../redux/modules/userSign'
@@ -91,12 +92,10 @@ const Users = () => {
   useEffect(() => {
     if (token) {
       dispatchGetUsers(param)
+    } else {
+      toast.error('Request failed with status code 401')
     }
   }, [dispatchGetUsers, token])
-
-  useEffect(() => {
-    dispatchGetUsers(param)
-  }, [param])
 
   return (
     <>
@@ -121,7 +120,7 @@ const Users = () => {
           <CFormSelect name="userStatus" onChange={handleChange}>
             <option>Status</option>
             <option value="1">Active</option>
-            <option value="0">Pending</option>
+            <option value="0">In Progress</option>
           </CFormSelect>
         </CCol>
       </CRow>

@@ -27,14 +27,16 @@ import { useWeb3 } from '../../redux/modules/web3/slice'
 import { usePatchData } from '../../redux/modules/userPatch'
 import contryCodes from '../../utilities/contryCodes.json'
 import { toast } from 'react-toastify'
+
 const UserDetailsForm = () => {
   const {
     roleGranted,
-    adminRole,
     joinAdminData,
+    joinAdminDataWithSafe,
     planterGrant,
     checkAdminRole,
     handleJoinPlanter,
+    handleJoinPlanterWithSafe,
     checkPlanterRoleGranted,
     handleGrantPlanterRole,
   } = useContract()
@@ -44,8 +46,7 @@ const UserDetailsForm = () => {
   const { userSign } = useUserSign()
   const [visible, setVisible] = useState(false)
   const [dataModalVisible, setDataModalVisible] = useState(false)
-  const { dispatchGetUserDetail, dispatchPatchUser, dispatchPatchUserInfo, userDetailData } =
-    useGetUserDetail()
+  const { dispatchGetUserDetail, dispatchPatchUser, userDetailData } = useGetUserDetail()
   const token = userSign?.access_token
   const [userFlag, setUserFlag] = useState(false)
   const [onchainFlag, setOnchainFlag] = useState(false)
@@ -146,15 +147,38 @@ const UserDetailsForm = () => {
         toast.error(joinAdminData.error.message)
       }
     }
+
+    if (joinAdminDataWithSafe) {
+      if (joinAdminDataWithSafe.hash) {
+        const textWithLink = (
+          <div>
+            <p>Transaction submitted to safe</p>
+            <p>
+              <a
+                href={`${web3.config.safeTxUrl}${web3.config.safeAddress}&id=multisig_${web3.config.safeAddress}_${joinAdminDataWithSafe.hash}`}
+                target="_blank"
+                rel="noreferrer"
+                className="text-white"
+              >
+                View on safe
+              </a>
+            </p>
+          </div>
+        )
+        toast.success(textWithLink)
+      } else if (joinAdminDataWithSafe.error) {
+        toast.error(joinAdminDataWithSafe.error.message)
+      }
+    }
   }, [
-    dispatchGetUserDetail,
     token,
-    userDetailData,
-    patchData,
     userFlag,
-    id,
+    userDetailData,
+    patchData.error,
+    patchData.data,
     planterGrant,
     joinAdminData,
+    joinAdminDataWithSafe,
   ])
 
   const handlePatchUserAction = (id, action) => {
@@ -186,17 +210,13 @@ const UserDetailsForm = () => {
           toast.error('Please select organization')
           return
         }
-
-        if (
-          sampleData.application.type === 1 &&
-          sampleData.application.organizationAddress !== process.env.REACT_APP_ZERO_ADDRESS
-        ) {
-          toast.error('Organization must be zero Address')
-          return
-        }
       }
     }
-    handleJoinPlanter(sampleData)
+    if (web3.config.multiSign === 'false') {
+      handleJoinPlanter(sampleData)
+    } else {
+      handleJoinPlanterWithSafe(sampleData)
+    }
   }
 
   const handleFormChange = (event) => {
@@ -228,25 +248,9 @@ const UserDetailsForm = () => {
           <CRow>
             <CCol className="col-3 mb-5 text-center">
               {avatarUrl && <CAvatar size="xl" src={avatarUrl} className="mt-5 mb-5" />}
-              {adminRole && (
-                <CCol className="mt-5 d-flex flex-column align-items-center">
-                  <CButton
-                    color="primary"
-                    variant="outline"
-                    className="d-flex mb-2 w-50 justify-content-center"
-                    onClick={() => setVisible(!visible)}
-                  >
-                    Verify Offchain
-                  </CButton>
-                  <CButton
-                    className="d-flex mb-2 w-50 justify-content-center"
-                    color="primary"
-                    variant="outline"
-                    onClick={() => showDataModal('onchain')}
-                  >
-                    Join Planter Onchain
-                  </CButton>
 
+              <CCol className="mt-5 d-flex flex-column align-items-center">
+                {web3.config && web3.config.multiSign === 'false' && !roleGranted && (
                   <CButton
                     color="primary"
                     variant="outline"
@@ -258,6 +262,20 @@ const UserDetailsForm = () => {
                   >
                     Grant Planter Role
                   </CButton>
+                )}
+
+                {web3.config && web3.config.multiSign === 'false' && (
+                  <CButton
+                    className="d-flex mb-2 w-50 justify-content-center"
+                    color="primary"
+                    variant="outline"
+                    onClick={() => showDataModal('onchain')}
+                  >
+                    Join Planter
+                  </CButton>
+                )}
+
+                {web3.config && web3.config.multiSign === 'true' && (
                   <CButton
                     className="d-flex mb-2 w-50 justify-content-center"
                     color="primary"
@@ -266,8 +284,17 @@ const UserDetailsForm = () => {
                   >
                     Join Planter
                   </CButton>
-                </CCol>
-              )}
+                )}
+
+                <CButton
+                  color="primary"
+                  variant="outline"
+                  className="d-flex mb-2 w-50 justify-content-center"
+                  onClick={() => setVisible(!visible)}
+                >
+                  Verify Offchain
+                </CButton>
+              </CCol>
             </CCol>
             <CCol className="col-9 mb-0">
               <CRow>

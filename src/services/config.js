@@ -15,8 +15,11 @@ const blockChainConfig = {
       },
     },
     exp_url: process.env.REACT_APP_POLYGON_EXPLORER_URL,
-    base_url: process.env.REACT_APP_MAIN_MATIC_BASE_URL,
+    base_url: process.env.REACT_APP_POLYGON_API_BASE_URL,
     multiSign: process.env.REACT_APP_POLYGON_MULTISIGN,
+    safeAddress: process.env.REACT_APP_POLYGON_SAFE_ADDRESS,
+    safeServiceUrl: process.env.REACT_APP_POLYGON_SAFE_SERVICE_URL,
+    safeTxUrl: process.env.REACT_APP_POLYGON_SAFE_TX_URL,
   },
   5: {
     contracts: {
@@ -34,8 +37,11 @@ const blockChainConfig = {
       },
     },
     exp_url: process.env.REACT_APP_GOERLI_EXPLORER_URL,
-    base_url: process.env.REACT_APP_MAIN_GOERLI_BASE_URL,
+    base_url: process.env.REACT_APP_GOERLI_API_BASE_URL,
     multiSign: process.env.REACT_APP_GOERLI_MULTISIGN,
+    safeAddress: process.env.REACT_APP_GOERLI_SAFE_ADDRESS,
+    safeServiceUrl: process.env.REACT_APP_GOERLI_SAFE_SERVICE_URL,
+    safeTxUrl: process.env.REACT_APP_GOERLI_SAFE_TX_URL,
   },
   80001: {
     contracts: {
@@ -52,9 +58,12 @@ const blockChainConfig = {
         abi: require('../abis/Planter.json'),
       },
     },
-    exp_url: process.env.REACT_APP_POLYGON_EXPLORER_URL,
-    base_url: process.env.REACT_APP_TEST_MATIC_BASE_URL,
-    multiSign: false,
+    exp_url: process.env.REACT_APP_MUMBAI_EXPLORER_URL,
+    base_url: process.env.REACT_APP_MUMBAI_API_BASE_URL,
+    multiSign: process.env.REACT_APP_MUMBAI_MULTISIGN,
+    safeAddress: process.env.REACT_APP_MUMBAI_SAFE_ADDRESS,
+    safeServiceUrl: process.env.REACT_APP_MUMBAI_SAFE_SERVICE_URL,
+    safeTxUrl: process.env.REACT_APP_MUMBAI_SAFE_TX_URL,
   },
 }
 

@@ -37,7 +37,7 @@ const blockChainConfig = {
       },
     },
     exp_url: process.env.REACT_APP_GOERLI_EXPLORER_URL,
-    base_url: process.env.REACT_APP_GOERLI_API_BASE_URL,
+    base_url: process.env.REACT_APP_MAIN_GOERLI_BASE_URL,
     multiSign: process.env.REACT_APP_GOERLI_MULTISIGN,
     safeAddress: process.env.REACT_APP_GOERLI_SAFE_ADDRESS,
     safeServiceUrl: process.env.REACT_APP_GOERLI_SAFE_SERVICE_URL,

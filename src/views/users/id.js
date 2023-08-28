@@ -170,6 +170,10 @@ const UserDetailsForm = () => {
         toast.error(joinAdminDataWithSafe.error.message)
       }
     }
+
+    return () => {
+      setUserFlag(false)
+    }
   }, [
     token,
     userFlag,

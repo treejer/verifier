@@ -84,7 +84,7 @@ const UserDetailsForm = () => {
       setUserFlag(!userFlag)
       checkAdminRole(LoggedUserAddress)
     }
-    if (token && userDetailData) {
+    if (token && userDetailData && userFlag) {
       setDetail(userDetailData)
       setSampleData(userDetailData)
       checkPlanterRoleGranted(userDetailData.user?.walletAddress)
@@ -258,7 +258,7 @@ const UserDetailsForm = () => {
                   <CButton
                     color="primary"
                     variant="outline"
-                    className="d-flex mb-2 w-50 justify-content-center"
+                    className="d-flex mb-2 w-75 justify-content-center"
                     onClick={() =>
                       userDetails.user.walletAddress &&
                       handleGrantAction(userDetailData.user.walletAddress)
@@ -270,7 +270,7 @@ const UserDetailsForm = () => {
 
                 {web3.config && web3.config.multiSign === 'false' && (
                   <CButton
-                    className="d-flex mb-2 w-50 justify-content-center"
+                    className="d-flex mb-2 w-75 justify-content-center"
                     color="primary"
                     variant="outline"
                     onClick={() => showDataModal('onchain')}
@@ -281,7 +281,7 @@ const UserDetailsForm = () => {
 
                 {web3.config && web3.config.multiSign === 'true' && (
                   <CButton
-                    className="d-flex mb-2 w-50 justify-content-center"
+                    className="d-flex mb-2 w-75 justify-content-center"
                     color="primary"
                     variant="outline"
                     onClick={() => showDataModal('')}
@@ -293,7 +293,7 @@ const UserDetailsForm = () => {
                 <CButton
                   color="primary"
                   variant="outline"
-                  className="d-flex mb-2 w-50 justify-content-center"
+                  className="d-flex mb-2 w-75 justify-content-center"
                   onClick={() => setVisible(!visible)}
                 >
                   Verify Offchain

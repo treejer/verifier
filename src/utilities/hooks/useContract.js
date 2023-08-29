@@ -12,9 +12,7 @@ const useContract = () => {
   const { web3 } = useWeb3()
   const [adminRole, setAdminRole] = useState(false)
   const [roleGranted, setRoleGranted] = useState(false)
-  const [planterGrant, setPlanterGrant] = useState({ error: null, success: null, hash: null })
-  const [joinAdminData, setJoinAdminData] = useState({ error: null, success: null, hash: null })
-  const [joinAdminDataWithSafe, setJoinAdminDataWithSafe] = useState({
+  const [contractResponse, setContractResponse] = useState({
     error: null,
     success: null,
     hash: null,
@@ -22,14 +20,18 @@ const useContract = () => {
 
   const checkPlanterRoleGranted = async (Address) => {
     try {
-      const roleHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('PLANTER_ROLE'))
-      const hasRole = await readContract({
-        address: web3.config.contracts.AR.address,
-        abi: web3.config.contracts.AR.abi,
-        functionName: 'hasRole',
-        args: [roleHash, Address],
-      })
-      setRoleGranted(hasRole)
+      if (!roleGranted) {
+        const roleHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('PLANTER_ROLE'))
+        const hasRole = await readContract({
+          address: web3.config.contracts.AR.address,
+          abi: web3.config.contracts.AR.abi,
+          functionName: 'hasRole',
+          args: [roleHash, Address],
+        })
+        setRoleGranted(hasRole)
+      } else {
+        return
+      }
     } catch (error) {
       console.error('Transaction error:', error)
     }
@@ -38,14 +40,20 @@ const useContract = () => {
   // Check Admin Role //
   const checkAdminRole = async (Address) => {
     try {
-      const hasRole = await readContract({
-        address: web3.config.contracts.AR.address,
-        abi: web3.config.contracts.AR.abi,
-        functionName: 'hasRole',
-        args: ['0x0000000000000000000000000000000000000000000000000000000000000000', Address],
-      })
-      setAdminRole(hasRole)
-    } catch (error) {}
+      if (!adminRole) {
+        const hasRole = await readContract({
+          address: web3.config.contracts.AR.address,
+          abi: web3.config.contracts.AR.abi,
+          functionName: 'hasRole',
+          args: ['0x0000000000000000000000000000000000000000000000000000000000000000', Address],
+        })
+        setAdminRole(hasRole)
+      } else {
+        return
+      }
+    } catch (error) {
+      console.log('err', error)
+    }
   }
 
   // handle grant planter role //
@@ -59,24 +67,24 @@ const useContract = () => {
         args: [roleHash, Address],
       })
       const { hash } = await writeContract(config)
-      setPlanterGrant({
+      setContractResponse({
         hash: null,
-        success: true,
+        success: { detail: 'Planter Submitted.', message: 'Planter Role granted successfully.' },
         error: null,
       })
       const tx = await waitForTransaction({
         hash: hash,
       })
-      setPlanterGrant({
-        hash: tx,
+      setContractResponse({
+        hash: { detail: tx, message: 'Planter Role granted successfully.' },
         success: null,
         error: null,
       })
     } catch (error) {
-      setPlanterGrant({
+      setContractResponse({
         hash: null,
         success: null,
-        error: error,
+        error: { detail: error, message: error.details },
       })
     }
   }
@@ -104,25 +112,24 @@ const useContract = () => {
       }
 
       const { hash } = await writeContract(joinPlanterTx)
-      setJoinAdminData({
+      setContractResponse({
         hash: null,
-        success: true,
+        success: { detail: 'Planter Joined.', message: 'Planter join submitted successfully.' },
         error: null,
       })
       const tx = await waitForTransaction({
         hash: hash,
       })
-      setJoinAdminData({
-        hash: tx,
+      setContractResponse({
+        hash: { detail: tx, message: 'Planter joined successfully.' },
         success: null,
         error: null,
       })
     } catch (error) {
-      const errors = { detail: error, message: 'This Planter Exist or not planter.' }
-      setJoinAdminData({
+      setContractResponse({
         hash: null,
         success: null,
-        error: errors,
+        error: { detail: error, message: 'This Planter Exist or not planter.' },
       })
     }
   }
@@ -216,17 +223,57 @@ const useContract = () => {
         senderAddress,
         senderSignature: signature.data,
       })
-
-      setJoinAdminDataWithSafe({
-        hash: safeTxHash,
-        success: true,
+      setContractResponse({
+        hash: { detail: safeTxHash, message: 'Transaction submitted successfully.' },
+        success: null,
         error: null,
       })
     } catch (error) {
-      setJoinAdminDataWithSafe({
+      setContractResponse({
         hash: null,
         success: null,
         error: { detail: error, message: error.message },
+      })
+    }
+  }
+
+  // Grant high Level Role //
+  const handleGrantHighLevel = async (role, address) => {
+    let roleHash = null
+    if (role === 'verifier') {
+      roleHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('VERIFIER_ROLE'))
+    } else if (role === 'admin') {
+      roleHash = '0x0000000000000000000000000000000000000000000000000000000000000000'
+    } else if (role === 'datamanager') {
+      roleHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('DATA_MANAGER_ROLE'))
+    }
+
+    try {
+      const config = await prepareWriteContract({
+        address: web3.config.contracts.AR.address,
+        abi: web3.config.contracts.AR.abi,
+        functionName: 'grantRole',
+        args: [roleHash, address],
+      })
+      const { hash } = await writeContract(config)
+      setContractResponse({
+        hash: null,
+        success: { detail: 'Planter Submitted.', message: 'Role submitted successfully.' },
+        error: null,
+      })
+      const tx = await waitForTransaction({
+        hash: hash,
+      })
+      setContractResponse({
+        hash: { detail: tx, message: 'Transaction submitted successfully.' },
+        success: null,
+        error: null,
+      })
+    } catch (error) {
+      setContractResponse({
+        hash: null,
+        success: null,
+        error: { detail: error, message: error.details },
       })
     }
   }
@@ -252,11 +299,10 @@ const useContract = () => {
   return {
     roleGranted,
     adminRole,
-    planterGrant,
-    joinAdminData,
-    joinAdminDataWithSafe,
+    contractResponse,
     checkAdminRole,
     handleJoinPlanter,
+    handleGrantHighLevel,
     handleJoinPlanterWithSafe,
     checkPlanterRoleGranted,
     handleGrantPlanterRole,

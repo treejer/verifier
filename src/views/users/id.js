@@ -4,6 +4,11 @@ import { cilChevronLeft } from '@coreui/icons'
 import { useParams } from 'react-router-dom'
 import useContract from '../../utilities/hooks/useContract'
 import {
+  CModal,
+  CModalHeader,
+  CModalBody,
+  CModalTitle,
+  CModalFooter,
   CCardLink,
   CAvatar,
   CCard,
@@ -13,14 +18,10 @@ import {
   CCol,
   CButton,
   CFormLabel,
-  CModal,
-  CModalHeader,
-  CModalTitle,
-  CModalBody,
-  CModalFooter,
   CFormSelect,
   CFormInput,
 } from '@coreui/react'
+import ChangeStatusModal from './changeStatusModal'
 import { useGetUserDetail } from '../../redux/modules/userDetail'
 import { useUserSign } from '../../redux/modules/userSign'
 import { useWeb3 } from '../../redux/modules/web3/slice'
@@ -31,11 +32,10 @@ import { toast } from 'react-toastify'
 const UserDetailsForm = () => {
   const {
     roleGranted,
-    joinAdminData,
-    joinAdminDataWithSafe,
-    planterGrant,
+    contractResponse,
     checkAdminRole,
     handleJoinPlanter,
+    handleGrantHighLevel,
     handleJoinPlanterWithSafe,
     checkPlanterRoleGranted,
     handleGrantPlanterRole,
@@ -45,12 +45,14 @@ const UserDetailsForm = () => {
   const { id } = useParams()
   const { userSign } = useUserSign()
   const [visible, setVisible] = useState(false)
+  const [signRoleModalVisible, setSingRoleModalVisible] = useState(false)
   const [dataModalVisible, setDataModalVisible] = useState(false)
   const { dispatchGetUserDetail, dispatchPatchUser, userDetailData } = useGetUserDetail()
   const token = userSign?.access_token
   const [userFlag, setUserFlag] = useState(false)
   const [onchainFlag, setOnchainFlag] = useState(false)
   const [sampleData, setSampleData] = useState(null)
+  const [highLevel, setHighLevel] = useState(null)
   const [userDetails, setDetail] = useState({
     user: {
       id: null,
@@ -81,7 +83,7 @@ const UserDetailsForm = () => {
   useEffect(() => {
     if (token && !userFlag) {
       dispatchGetUserDetail(id)
-      setUserFlag(!userFlag)
+      setUserFlag(true)
       checkAdminRole(LoggedUserAddress)
     }
     if (token && userDetailData && userFlag) {
@@ -96,94 +98,35 @@ const UserDetailsForm = () => {
       toast.success('User Data Successfully changed.')
     }
 
-    // handle Planter error and success //
-    if (planterGrant) {
-      if (planterGrant.hash) {
+    if (contractResponse && userFlag) {
+      if (contractResponse.hash) {
         const textWithLink = (
           <div>
-            <p>Planter Role granted successfully.</p>
+            <p>{contractResponse.hash?.message}</p>
             <p>
               <a
-                href={`${web3.config.exp_url}/tx/${planterGrant.hash.transactionHash}`}
+                href={`${web3.config.exp_url}/tx/${contractResponse.hash?.detail?.transactionHash}`}
                 target="_blank"
                 rel="noreferrer"
                 className="text-white"
               >
-                Link to Planter Role
+                Transaction Link
               </a>
             </p>
           </div>
         )
         toast.success(textWithLink)
-      } else if (planterGrant.success) {
-        toast.success('Planter Role submitted successfully')
-      } else if (planterGrant.error) {
-        toast.error(planterGrant.error.details)
-      }
-    }
-
-    // handle Planter error and success //
-    if (joinAdminData) {
-      if (joinAdminData.hash) {
-        const textWithLink = (
-          <div>
-            <p>Transaction is successful</p>
-            <p>
-              <a
-                href={`${web3.config.exp_url}/tx/${joinAdminData.hash.transactionHash}`}
-                target="_blank"
-                rel="noreferrer"
-                className="text-white"
-              >
-                Transaction link
-              </a>
-            </p>
-          </div>
-        )
-        toast.success(textWithLink)
-      } else if (joinAdminData.success) {
-        toast.success('Action submitted successfully')
-      } else if (joinAdminData.error) {
-        toast.error(joinAdminData.error.message)
-      }
-    }
-
-    if (joinAdminDataWithSafe) {
-      if (joinAdminDataWithSafe.hash) {
-        const textWithLink = (
-          <div>
-            <p>Transaction submitted to safe</p>
-            <p>
-              <a
-                href={`${web3.config.safeTxUrl}${web3.config.safeAddress}&id=multisig_${web3.config.safeAddress}_${joinAdminDataWithSafe.hash}`}
-                target="_blank"
-                rel="noreferrer"
-                className="text-white"
-              >
-                View on safe
-              </a>
-            </p>
-          </div>
-        )
-        toast.success(textWithLink)
-      } else if (joinAdminDataWithSafe.error) {
-        toast.error(joinAdminDataWithSafe.error.message)
+      } else if (contractResponse.success) {
+        toast.success(contractResponse.success?.message)
+      } else if (contractResponse.error) {
+        toast.error(contractResponse.error.message)
       }
     }
 
     return () => {
       setUserFlag(false)
     }
-  }, [
-    token,
-    userFlag,
-    userDetailData,
-    patchData.error,
-    patchData.data,
-    planterGrant,
-    joinAdminData,
-    joinAdminDataWithSafe,
-  ])
+  }, [token, userDetailData, patchData, contractResponse])
 
   const handlePatchUserAction = (id, action) => {
     dispatchPatchUser(id, action)
@@ -234,6 +177,14 @@ const UserDetailsForm = () => {
         [propertyName]: value,
       },
     }))
+  }
+
+  const handleHighLevel = (event) => {
+    setHighLevel(event.target.value)
+  }
+
+  const grantHighLevelRole = () => {
+    handleGrantHighLevel(highLevel, userDetails.user?.walletAddress)
   }
 
   return (
@@ -297,6 +248,15 @@ const UserDetailsForm = () => {
                   onClick={() => setVisible(!visible)}
                 >
                   Verify Offchain
+                </CButton>
+
+                <CButton
+                  color="primary"
+                  variant="outline"
+                  className="d-flex mb-2 w-75 justify-content-center"
+                  onClick={() => setSingRoleModalVisible(!visible)}
+                >
+                  Assign Role
                 </CButton>
               </CCol>
             </CCol>
@@ -468,35 +428,47 @@ const UserDetailsForm = () => {
         </CCardBody>
       </CCard>
 
-      <CModal backdrop="static" visible={visible} onClose={() => setVisible(false)}>
-        <CModalBody className="fs-5 fw-bold">Do you really want to change status?</CModalBody>
+      <ChangeStatusModal
+        visible={visible}
+        onClose={() => setVisible(false)}
+        onReject={() =>
+          userDetails.user._id && handlePatchUserAction(userDetails.user._id, 'reject')
+        }
+        onVerify={() =>
+          userDetails.user._id && handlePatchUserAction(userDetails.user._id, 'verify')
+        }
+      />
+
+      <CModal
+        backdrop="static"
+        visible={signRoleModalVisible}
+        onClose={() => setSingRoleModalVisible(false)}
+      >
+        <CModalHeader>
+          <CModalTitle>Grant High Level roles</CModalTitle>
+        </CModalHeader>
+        <CModalBody className="fs-5 fw-bold">
+          <CFormSelect name="highlevel" className="w-100" size="sm" onChange={handleHighLevel}>
+            <option>Select role</option>
+            <option value="verifier">Verifier</option>
+            <option value="datamanager">Data Manager</option>
+            <option value="admin">Admin</option>
+          </CFormSelect>
+        </CModalBody>
         <CModalFooter>
           <CRow className="w-100">
-            <CCol xs={8}>
-              <CButton color="secondary" onClick={() => setVisible(false)}>
+            <CCol xs={9}>
+              <CButton color="secondary" onClick={() => setSingRoleModalVisible(false)}>
                 Cancel
               </CButton>
             </CCol>
-            <CCol xs={2}>
+            <CCol xs={3}>
               <CButton
-                className="text-white"
-                color="danger"
-                onClick={() =>
-                  userDetails.user._id && handlePatchUserAction(userDetails.user._id, 'reject')
-                }
-              >
-                Reject
-              </CButton>
-            </CCol>
-            <CCol xs={1}>
-              <CButton
-                className="text-white"
+                className="text-white w-100"
                 color="primary"
-                onClick={() =>
-                  userDetails.user._id && handlePatchUserAction(userDetails.user._id, 'verify')
-                }
+                onClick={() => highLevel && grantHighLevelRole()}
               >
-                Verify
+                Save
               </CButton>
             </CCol>
           </CRow>

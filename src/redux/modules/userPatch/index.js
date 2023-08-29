@@ -1,4 +1,5 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useCallback } from 'react'
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
@@ -26,7 +27,13 @@ const patchSlice = createSlice({
 export function usePatchData() {
   const patchData = useSelector((state) => state.patchSlice)
 
-  return { patchData }
+  const dispatch = useDispatch()
+  const dispatchReset = useCallback(() => {
+    console.log('inja call mishe')
+    dispatch(resetPatchState())
+  }, [dispatch])
+
+  return { patchData, dispatchReset }
 }
 
 export const { setPatchData, setPatchError, resetPatchState } = patchSlice.actions

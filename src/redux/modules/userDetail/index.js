@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { put, takeLatest, select, call } from 'redux-saga/effects'
 import ReduxFetchState from 'redux-fetch-state'
-import { setPatchData, setPatchError, resetPatchState } from '../userPatch'
+import { setPatchData, setPatchError } from '../userPatch'
 import { useDispatch, useSelector } from 'react-redux'
 import apiPlugin from '../../../services/api'
 
@@ -48,10 +48,9 @@ export function* watchUserDetail(action) {
       }
     }
     yield put(actions.loadSuccess(response))
-    yield put(resetPatchState())
   } catch (e) {
     yield put(actions.loadFailure(e))
-    yield put(resetPatchState())
+    // yield put(resetPatchState())
   }
 }
 
@@ -71,6 +70,7 @@ function* patchUserDetail(action) {
     })
     yield put(setPatchData(response))
   } catch (error) {
+    console.log('bo error', error)
     yield put(setPatchError(error))
   }
 }

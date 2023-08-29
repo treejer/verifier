@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import useContract from '../../utilities/hooks/useContract'
 import {
   CModal,
+  CSpinner,
   CModalHeader,
   CModalBody,
   CModalTitle,
@@ -41,7 +42,7 @@ const UserDetailsForm = () => {
     handleGrantPlanterRole,
   } = useContract()
   const { web3 } = useWeb3()
-  const { patchData } = usePatchData()
+  const { patchData, dispatchReset } = usePatchData()
   const { id } = useParams()
   const { userSign } = useUserSign()
   const [visible, setVisible] = useState(false)
@@ -51,6 +52,8 @@ const UserDetailsForm = () => {
   const token = userSign?.access_token
   const [userFlag, setUserFlag] = useState(false)
   const [onchainFlag, setOnchainFlag] = useState(false)
+  const [loadingBtn, setLoadingBtn] = useState(false)
+  const [loadingRejectBtn, setLoadingRejectBtn] = useState(false)
   const [sampleData, setSampleData] = useState(null)
   const [highLevel, setHighLevel] = useState(null)
   const [userDetails, setDetail] = useState({
@@ -92,6 +95,8 @@ const UserDetailsForm = () => {
       checkPlanterRoleGranted(userDetailData.user?.walletAddress)
     }
 
+    setLoadingRejectBtn(false)
+    setLoadingBtn(false)
     if (patchData.error && userFlag) {
       toast.error(patchData.error.message)
     } else if (patchData.data && !patchData.error) {
@@ -99,6 +104,7 @@ const UserDetailsForm = () => {
     }
 
     if (contractResponse && userFlag) {
+      setLoadingBtn(false)
       if (contractResponse.hash) {
         const textWithLink = (
           <div>
@@ -124,11 +130,19 @@ const UserDetailsForm = () => {
     }
 
     return () => {
-      setUserFlag(false)
+      if (userFlag) {
+        setUserFlag(false)
+        dispatchReset()
+      }
     }
   }, [token, userDetailData, patchData, contractResponse])
 
   const handlePatchUserAction = (id, action) => {
+    if (action === 'reject') {
+      setLoadingRejectBtn(true)
+    } else if (action === 'verify') {
+      setLoadingBtn(true)
+    }
     dispatchPatchUser(id, action)
     setVisible(false)
   }
@@ -148,6 +162,7 @@ const UserDetailsForm = () => {
 
   const hanldeJoinPlanterAction = () => {
     if (dataModalVisible) {
+      setLoadingBtn(false)
       if (sampleData.application?.type) {
         if (
           sampleData.application?.type === 3 &&
@@ -158,10 +173,17 @@ const UserDetailsForm = () => {
           return
         }
       }
+
+      if (!sampleData.application?.latitude || !sampleData.application?.longitude) {
+        toast.error('Please select location longitude and latitude')
+        return
+      }
     }
     if (web3.config.multiSign === 'false') {
+      setLoadingBtn(true)
       handleJoinPlanter(sampleData)
     } else {
+      setLoadingBtn(true)
       handleJoinPlanterWithSafe(sampleData)
     }
   }
@@ -184,6 +206,7 @@ const UserDetailsForm = () => {
   }
 
   const grantHighLevelRole = () => {
+    setLoadingBtn(true)
     handleGrantHighLevel(highLevel, userDetails.user?.walletAddress)
   }
 
@@ -430,6 +453,8 @@ const UserDetailsForm = () => {
 
       <ChangeStatusModal
         visible={visible}
+        rejectLoading={loadingRejectBtn}
+        verifyLoading={loadingBtn}
         onClose={() => setVisible(false)}
         onReject={() =>
           userDetails.user._id && handlePatchUserAction(userDetails.user._id, 'reject')
@@ -467,7 +492,17 @@ const UserDetailsForm = () => {
                 className="text-white w-100"
                 color="primary"
                 onClick={() => highLevel && grantHighLevelRole()}
+                disabled={loadingBtn}
               >
+                {loadingBtn && (
+                  <CSpinner
+                    component="span"
+                    size="sm"
+                    variant="grow"
+                    aria-hidden="true"
+                    className="me-2"
+                  />
+                )}
                 Save
               </CButton>
             </CCol>
@@ -624,7 +659,17 @@ const UserDetailsForm = () => {
                   className="text-white"
                   color="primary"
                   onClick={() => userDetails.user.walletAddress && hanldeJoinPlanterAction()}
+                  disabled={loadingBtn}
                 >
+                  {loadingBtn && (
+                    <CSpinner
+                      component="span"
+                      size="sm"
+                      variant="grow"
+                      aria-hidden="true"
+                      className="me-2"
+                    />
+                  )}
                   Save & Accept Join Planter
                 </CButton>
               )}
@@ -633,7 +678,17 @@ const UserDetailsForm = () => {
                   className="text-white"
                   color="primary"
                   onClick={() => userDetails.user.walletAddress && hanldeJoinPlanterAction()}
+                  disabled={loadingBtn}
                 >
+                  {loadingBtn && (
+                    <CSpinner
+                      component="span"
+                      size="sm"
+                      variant="grow"
+                      aria-hidden="true"
+                      className="me-2"
+                    />
+                  )}
                   Save & Accept Join onchain
                 </CButton>
               )}

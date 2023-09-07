@@ -45,7 +45,7 @@ const useContract = () => {
           address: web3.config.contracts.AR.address,
           abi: web3.config.contracts.AR.abi,
           functionName: 'hasRole',
-          args: ['0x0000000000000000000000000000000000000000000000000000000000000000', Address],
+          args: [emptyHash(64), Address],
         })
         setAdminRole(hasRole)
       } else {
@@ -237,13 +237,18 @@ const useContract = () => {
     }
   }
 
+  // Create Zero Hash //
+  const emptyHash = (zeroCount) => {
+    return `0x${new Array(zeroCount).fill('0').join('')}`
+  }
+
   // Grant high Level Role //
   const handleGrantHighLevel = async (role, address) => {
     let roleHash = null
     if (role === 'verifier') {
       roleHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('VERIFIER_ROLE'))
     } else if (role === 'admin') {
-      roleHash = '0x0000000000000000000000000000000000000000000000000000000000000000'
+      roleHash = emptyHash(64)
     } else if (role === 'datamanager') {
       roleHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('DATA_MANAGER_ROLE'))
     }
@@ -284,10 +289,10 @@ const useContract = () => {
     const lng = Math.trunc(data.application.longitude * Math.pow(10, 6))
     const reff = data.application.Referrer
       ? data.application.Referrer
-      : '0x0000000000000000000000000000000000000000'
+      : process.env.REACT_APP_ZERO_ADDRESS
     const OgAdd = data.application.organizationAddress
       ? data.application.organizationAddress
-      : '0x0000000000000000000000000000000000000000'
+      : process.env.REACT_APP_ZERO_ADDRESS
     return { lng, lat, contryCode, reff, OgAdd }
   }
 

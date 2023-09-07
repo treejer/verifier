@@ -38,7 +38,7 @@ export function* usersSagas() {
 
 export function useGetUsers() {
   const dispatch = useDispatch()
-  const { data: usersData, loading: userLoading } = useSelector((state) => state.users)
+  const { data: usersData, ...users } = useSelector((state) => state.users)
   const dispatchGetUsers = useCallback(
     (action) => {
       const param = action
@@ -46,7 +46,7 @@ export function useGetUsers() {
     },
     [dispatch],
   )
-  return { usersData, userLoading, dispatchGetUsers }
+  return { usersData, ...users, dispatchGetUsers }
 }
 
 export { reducer as UsersReducer, actions as UsersActions, actionTypes as UsersActionTypes }

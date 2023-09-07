@@ -27,6 +27,7 @@ import {
   CNavLink,
 } from '@coreui/react'
 import Skeleton from 'react-loading-skeleton'
+import { ellipsisString } from '../../utilities/hooks/useEllipsis'
 import { Pagination } from '../../components/common'
 import 'react-loading-skeleton/dist/skeleton.css'
 
@@ -152,8 +153,10 @@ const Planters = () => {
                       <CTableDataCell>
                         {planter.user.firstName + ' ' + planter.user.lastName}
                       </CTableDataCell>
-                      <CTableDataCell>{planter.request.signer}</CTableDataCell>
-                      <CTableDataCell>{planter.request.treeSpecs}</CTableDataCell>
+                      <CTableDataCell>{ellipsisString(planter.request.signer, 5)}</CTableDataCell>
+                      <CTableDataCell>
+                        {ellipsisString(planter.request.treeSpecs, 9)}
+                      </CTableDataCell>
                       <CTableDataCell>
                         {moment(planter.request.createdAt).format('YYYY-MM-DD - hh:mm a')}
                       </CTableDataCell>

@@ -30,6 +30,17 @@
   }
 }
 
+.nav {
+
+  .active {
+    border-bottom: 1px solid;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+}
+
 // Size //
 .w-15-icon {
   width: 15px;

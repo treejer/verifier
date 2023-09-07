@@ -18,6 +18,12 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'Planters',
+    to: '/planters',
+    icon: <CIcon icon={cilPlant} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Trees',
     to: '/trees',
     icon: <CIcon icon={cilPlant} customClassName="nav-icon" />,

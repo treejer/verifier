@@ -5,6 +5,7 @@ import patchSlice from './modules/userPatch'
 import { userSignReducer } from './modules/userSign'
 import { userNonceReducer } from './modules/userNonce'
 import { UsersReducer } from './modules/users'
+import { PlantersReducer } from './modules/planters'
 import { userDetailReducer } from './modules/userDetail'
 
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   web3: web3Reducer,
   patchSlice: patchSlice,
   users: UsersReducer,
+  planters: PlantersReducer,
   userDetail: userDetailReducer,
 })
 

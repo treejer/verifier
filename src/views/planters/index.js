@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import CIcon from '@coreui/icons-react'
-// import debounce from 'lodash.debounce'
-// import { toast } from 'react-toastify'
+import debounce from 'lodash.debounce'
+import { toast } from 'react-toastify'
 import { cilPencil } from '@coreui/icons'
 import { useGetPlanters } from '../../redux/modules/planters'
 import { useUserSign } from '../../redux/modules/userSign'
@@ -27,82 +27,66 @@ import {
   CNavLink,
 } from '@coreui/react'
 import Skeleton from 'react-loading-skeleton'
-// import { Pagination } from '../../components/common'
+import { Pagination } from '../../components/common'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 const Planters = () => {
   const [activeTab, setActiveTab] = useState('Plant')
-  const { dispatchGetPlanters, plantersData, planterLoading } = useGetPlanters()
+  const { dispatchGetPlanters, plantersData, loading: planterLoading } = useGetPlanters()
   const { userSign } = useUserSign()
   const token = userSign?.access_token
-  // const [param, setParam] = useState({
-  //   skip: 0,
-  //   limit: 20,
-  //   filters: {},
-  //   sort: { createdAt: 1 },
-  // })
-  // const userList = token ? usersData?.data : []
-  // const totalPage = token ? Math.ceil(usersData?.count / param.limit) : 0
-  // const handlePageChange = (newPage) => {
-  //   setParam((prevParam) => ({
-  //     ...prevParam,
-  //     skip: newPage - 1,
-  //   }))
-  // }
+  const [param, setParam] = useState({
+    skip: 0,
+    limit: 20,
+    signer: null,
+    sort: { createdAt: 1 },
+  })
+  const { data: plantersList, count: pageCount } = plantersData
+    ? plantersData
+    : { data: [], count: 0 }
+  const totalPage = token ? Math.ceil(pageCount / param.limit) : 0
+  const handlePageChange = (newPage) => {
+    setParam((prevParam) => ({
+      ...prevParam,
+      skip: newPage - 1,
+    }))
+  }
 
-  // const handleSort = () => {
-  //   if (userList.length > 0) {
-  //     setSort(!sort)
-  //     setParam((prevParam) => ({
-  //       ...prevParam,
-  //       sort: {
-  //         createdAt: sort ? 1 : -1,
-  //       },
-  //     }))
-  //   }
-  // }
+  const debouncedSetParam = debounce((newParam) => {
+    setParam(newParam)
+  }, 1000)
 
-  // const debouncedSetParam = debounce((newParam) => {
-  //   setParam(newParam)
-  // }, 1000)
-
-  // const handleChange = (event) => {
-  //   const filterKey = event.target.name
-  //   let filterValue = event.target.value
-
-  //   if (filterKey === 'userStatus') {
-  //     filterValue = filterValue === 'Status' ? null : Number(filterValue)
-  //   }
-
-  //   debouncedSetParam((prevParam) => {
-  //     const { filters, ...restParam } = prevParam
-  //     const updatedFilters = { ...filters }
-
-  //     if (filterValue !== '' && filterValue !== null) {
-  //       updatedFilters[filterKey] = filterValue
-  //     } else {
-  //       delete updatedFilters[filterKey]
-  //     }
-
-  //     return {
-  //       ...restParam,
-  //       filters: updatedFilters,
-  //       skip: 0,
-  //     }
-  //   })
-  // }
+  const handleChange = (event) => {
+    const signerAddress = event.target.value
+    debouncedSetParam((prevParam) => {
+      return {
+        ...prevParam,
+        signer: signerAddress,
+        skip: 0,
+      }
+    })
+  }
 
   useEffect(() => {
-    console.log('plantersss', plantersData)
     if (token) {
-      dispatchGetPlanters(activeTab)
+      dispatchGetPlanters(activeTab, param)
     } else {
-      // toast.error('Request failed with status code 401')
+      toast.error('Request failed with status code 401')
     }
-  }, [dispatchGetPlanters, token, activeTab])
+  }, [dispatchGetPlanters, token, activeTab, param])
 
   return (
     <>
+      <CRow className="mb-3">
+        <CCol className="col-4">
+          <CFormInput
+            name="signer"
+            onChange={handleChange}
+            aria-describedby="basic-addon3"
+            placeholder="Search by Signer"
+          />
+        </CCol>
+      </CRow>
       <CRow className="mb-3">
         <CCol className="col-12">
           <CNav>
@@ -148,7 +132,7 @@ const Planters = () => {
               <CTableRow>
                 <CTableHeaderCell scope="col">#</CTableHeaderCell>
                 <CTableHeaderCell scope="col" className="w-15">
-                  ID
+                  Planter
                 </CTableHeaderCell>
                 <CTableHeaderCell scope="col">Signer</CTableHeaderCell>
                 <CTableHeaderCell scope="col" className="w-25">
@@ -161,27 +145,29 @@ const Planters = () => {
             </CTableHead>
             {!planterLoading && (
               <CTableBody>
-                {plantersData &&
-                  plantersData.map((planter, index) => (
+                {plantersList.length > 0 &&
+                  plantersList.map((planter, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
-                      <CTableDataCell>{planter._id}</CTableDataCell>
-                      <CTableDataCell>{planter.signer}</CTableDataCell>
-                      <CTableDataCell>{planter.treeSpecs}</CTableDataCell>
                       <CTableDataCell>
-                        {moment(planter.createdAt).format('YYYY-MM-DD - hh:mm a')}
+                        {planter.user.firstName + ' ' + planter.user.lastName}
+                      </CTableDataCell>
+                      <CTableDataCell>{planter.request.signer}</CTableDataCell>
+                      <CTableDataCell>{planter.request.treeSpecs}</CTableDataCell>
+                      <CTableDataCell>
+                        {moment(planter.request.createdAt).format('YYYY-MM-DD - hh:mm a')}
                       </CTableDataCell>
                       <CTableDataCell>
                         <CBadge
-                          color={planter.status > 0 ? 'success' : 'warning'}
+                          color={planter.request.status > 0 ? 'success' : 'warning'}
                           className="text-white"
                         >
-                          {planter.status > 0 ? 'active' : 'pending'}
+                          {planter.request.status > 0 ? 'active' : 'pending'}
                         </CBadge>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
                         <CCardLink
-                          href={`/#/planters/p&${planter._id}`}
+                          href={`/#/planters/p&${planter.request._id}`}
                           className="text-decoration-none"
                         >
                           <CIcon icon={cilPencil} height={14} className="pe-1" />
@@ -196,7 +182,7 @@ const Planters = () => {
             <Skeleton count={10} height={45} className="w-100 mb-2" containerClassName="w-100" />
           )}
 
-          {/* {(totalPage > 0 || (userList && userList.length > 0)) && (
+          {(totalPage > 0 || (plantersList && plantersList.length > 0)) && (
             <>
               <Pagination
                 currentPage={param.skip + 1}
@@ -204,7 +190,7 @@ const Planters = () => {
                 onPageChange={handlePageChange}
               />
             </>
-          )} */}
+          )}
         </CCardBody>
       </CCard>
     </>

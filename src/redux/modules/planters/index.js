@@ -7,11 +7,12 @@ import apiPlugin from '../../../services/api'
 const { actions, actionTypes, reducer } = new ReduxFetchState('Planter')
 
 export function* watchPlanters(action) {
-  const param = action.payload?.toLowerCase()
+  const { param, action: actionType } = action.payload
   const { base_url } = yield select((state) => state.web3?.config || {})
   const { access_token } = yield select((state) => state.userSign?.data || {})
   try {
-    const response = yield apiPlugin.getData(`${base_url}/${param}_requests/verification`, {
+    const response = yield apiPlugin.getData(`${base_url}/${actionType}_requests`, {
+      params: param,
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${access_token}`,
@@ -29,14 +30,14 @@ export function* plantersSagas() {
 
 export function useGetPlanters() {
   const dispatch = useDispatch()
-  const { data: plantersData, loading: planterLoading } = useSelector((state) => state.planters)
+  const { data: plantersData, ...Planter } = useSelector((state) => state.planters)
   const dispatchGetPlanters = useCallback(
-    (action) => {
-      dispatch(actions.load(action))
+    (action, param) => {
+      dispatch(actions.load({ action, param }))
     },
     [dispatch],
   )
-  return { plantersData, planterLoading, dispatchGetPlanters }
+  return { plantersData, ...Planter, dispatchGetPlanters }
 }
 
 export {

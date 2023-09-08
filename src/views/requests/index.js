@@ -19,7 +19,6 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-  CFormSelect,
   CRow,
   CCol,
   CNav,
@@ -42,7 +41,7 @@ const Planters = () => {
     signer: null,
     sort: { createdAt: 1 },
   })
-  const { data: plantersList, count: pageCount } = plantersData
+  const { data: requestsList, count: pageCount } = plantersData
     ? plantersData
     : { data: [], count: 0 }
   const totalPage = token ? Math.ceil(pageCount / param.limit) : 0
@@ -135,7 +134,6 @@ const Planters = () => {
                 <CTableHeaderCell scope="col" className="w-15">
                   Planter
                 </CTableHeaderCell>
-                <CTableHeaderCell scope="col">Signer</CTableHeaderCell>
                 <CTableHeaderCell scope="col" className="w-25">
                   TreeSpec
                 </CTableHeaderCell>
@@ -146,31 +144,29 @@ const Planters = () => {
             </CTableHead>
             {!planterLoading && (
               <CTableBody>
-                {plantersList.length > 0 &&
-                  plantersList.map((planter, index) => (
+                {requestsList.length > 0 &&
+                  requestsList.map((item, index) => (
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
                       <CTableDataCell>
-                        {planter.user.firstName + ' ' + planter.user.lastName}
+                        {item.user.firstName + ' ' + item.user.lastName} (
+                        {ellipsisString(item.request.signer, 5)}) {item.request._id}
                       </CTableDataCell>
-                      <CTableDataCell>{ellipsisString(planter.request.signer, 5)}</CTableDataCell>
+                      <CTableDataCell>{ellipsisString(item.request.treeSpecs, 9)}</CTableDataCell>
                       <CTableDataCell>
-                        {ellipsisString(planter.request.treeSpecs, 9)}
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        {moment(planter.request.createdAt).format('YYYY-MM-DD - hh:mm a')}
+                        {moment(item.request.createdAt).format('YYYY-MM-DD - hh:mm a')}
                       </CTableDataCell>
                       <CTableDataCell>
                         <CBadge
-                          color={planter.request.status > 0 ? 'success' : 'warning'}
+                          color={item.request.status > 0 ? 'success' : 'warning'}
                           className="text-white"
                         >
-                          {planter.request.status > 0 ? 'active' : 'pending'}
+                          {item.request.status > 0 ? 'active' : 'pending'}
                         </CBadge>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
                         <CCardLink
-                          href={`/#/planters/p&${planter.request._id}`}
+                          href={`/#/requests/${activeTab}/${item.request._id}`}
                           className="text-decoration-none"
                         >
                           <CIcon icon={cilPencil} height={14} className="pe-1" />
@@ -185,7 +181,7 @@ const Planters = () => {
             <Skeleton count={10} height={45} className="w-100 mb-2" containerClassName="w-100" />
           )}
 
-          {(totalPage > 0 || (plantersList && plantersList.length > 0)) && (
+          {(totalPage > 0 || (requestsList && requestsList.length > 0)) && (
             <>
               <Pagination
                 currentPage={param.skip + 1}

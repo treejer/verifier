@@ -60,6 +60,19 @@ class ReactApiPlugin {
       }
     }
   }
+
+  async deleteData(url, config = {}) {
+    try {
+      const response = await axios.delete(url, config)
+      return response.data
+    } catch (error) {
+      if (error.response) {
+        throw new Error(error.response.data.message)
+      } else {
+        throw new Error('Network error')
+      }
+    }
+  }
 }
 
 const apiPluginInstance = new ReactApiPlugin()

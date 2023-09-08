@@ -7,6 +7,8 @@ import { userNonceReducer } from './modules/userNonce'
 import { UsersReducer } from './modules/users'
 import { PlantersReducer } from './modules/planters'
 import { userDetailReducer } from './modules/userDetail'
+import { treeDetailReducer } from './modules/treeDetail'
+import { basketReducer } from './modules/verifyList'
 
 const rootReducer = combineReducers({
   init: initReducer,
@@ -15,7 +17,9 @@ const rootReducer = combineReducers({
   web3: web3Reducer,
   patchSlice: patchSlice,
   users: UsersReducer,
+  verifyList: basketReducer,
   planters: PlantersReducer,
+  treeDetail: treeDetailReducer,
   userDetail: userDetailReducer,
 })
 

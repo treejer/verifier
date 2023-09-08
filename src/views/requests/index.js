@@ -149,8 +149,10 @@ const Planters = () => {
                     <CTableRow key={index}>
                       <CTableDataCell>{index + 1}</CTableDataCell>
                       <CTableDataCell>
-                        {item.user.firstName + ' ' + item.user.lastName} (
-                        {ellipsisString(item.request.signer, 5)}) {item.request._id}
+                        {item.user.firstName + ' ' + item.user.lastName}
+                        <span className="text-primary">
+                          ({ellipsisString(item.request.signer, 5)})
+                        </span>
                       </CTableDataCell>
                       <CTableDataCell>{ellipsisString(item.request.treeSpecs, 9)}</CTableDataCell>
                       <CTableDataCell>

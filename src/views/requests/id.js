@@ -17,7 +17,6 @@ import { useGetVerifyList } from '../../redux/modules/verifyList'
 import { useGetTreeDetail } from '../../redux/modules/treeDetail'
 import { createMapUrl } from '../../utilities/hooks/useMap'
 import { useUserSign } from '../../redux/modules/userSign'
-import Skeleton from 'react-loading-skeleton'
 import { toast } from 'react-toastify'
 
 const PlantDetails = () => {
@@ -198,7 +197,7 @@ const PlantDetails = () => {
                                 <>
                                   <h6 className="border-bottom pb-2 mb-4">
                                     Update:
-                                    {moment(Number(update.created_at)).format(
+                                    {moment(Number(update.created_at * 1000)).format(
                                       'MM/DD/YYYY - hh:mm a',
                                     )}
                                   </h6>

@@ -66,7 +66,8 @@ const VerifyList = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {listData.length > 0 &&
+              {listData &&
+                listData.length > 0 &&
                 listData.map((item, index) => (
                   <CTableRow key={index}>
                     <CTableDataCell>{index + 1}</CTableDataCell>

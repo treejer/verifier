@@ -29,7 +29,7 @@ export function* watchBasket(action) {
   }
 }
 
-export function* basketSagas() {
+export function* veirfyListSagas() {
   yield takeEvery(actionTypes.load, watchBasket)
 }
 

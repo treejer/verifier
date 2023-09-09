@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import CIcon from '@coreui/icons-react'
 import { toast } from 'react-toastify'
@@ -20,22 +20,58 @@ import {
   CButton,
 } from '@coreui/react'
 import { ellipsisString } from '../../utilities/hooks/useEllipsis'
+import useTreeFactoryContract from '../../utilities/hooks/useTreeFactoryContract'
+import { useWeb3 } from '../../redux/modules/web3/slice'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 const VerifyList = () => {
-  const { dispatchActionList, listData } = useGetVerifyList()
+  const { web3 } = useWeb3()
   const { userSign } = useUserSign()
+  const [loadingBtn, setLoadingBtn] = useState(false)
+  const { dispatchActionList, listData } = useGetVerifyList()
+  const { contractResponse, dispatchVerifyList } = useTreeFactoryContract()
   const token = userSign?.access_token
 
   const removeFromList = (item) => {
     dispatchActionList('removeFromList', item)
   }
 
+  const dispatchVerify = () => {
+    dispatchVerifyList('verify')
+    setLoadingBtn(true)
+  }
+
   useEffect(() => {
     if (!token) {
       toast.error('Request failed with status code 401')
     }
-  }, [token])
+
+    if (contractResponse) {
+      setLoadingBtn(false)
+      if (contractResponse.hash) {
+        const textWithLink = (
+          <div>
+            <p>{contractResponse.hash?.message}</p>
+            <p>
+              <a
+                href={`${web3.config.exp_url}/tx/${contractResponse.hash?.detail?.transactionHash}`}
+                target="_blank"
+                rel="noreferrer"
+                className="text-white"
+              >
+                Transaction Link
+              </a>
+            </p>
+          </div>
+        )
+        toast.success(textWithLink)
+      } else if (contractResponse.success) {
+        toast.success(contractResponse.success?.message)
+      } else if (contractResponse.error) {
+        toast.error(contractResponse.error.message)
+      }
+    }
+  }, [token, contractResponse])
 
   return (
     <>
@@ -44,7 +80,7 @@ const VerifyList = () => {
           <h4 id="traffic" className="col-md-10 card-title mb-0">
             Verify List
           </h4>
-          <CButton color="primary" variant="outline" onClick={() => console.log('verify')}>
+          <CButton color="primary" variant="outline" onClick={dispatchVerify} disabled={loadingBtn}>
             Verify All Of List
           </CButton>
         </CCardHeader>

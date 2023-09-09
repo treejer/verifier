@@ -44,6 +44,19 @@
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "treeId",
+        "type": "uint256"
+      }
+    ],
+    "name": "AssignedTreeVerifiedWithSign",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "lastRegualarTreeId",
         "type": "uint256"
       }
@@ -181,6 +194,19 @@
         "internalType": "uint256",
         "name": "treeId",
         "type": "uint256"
+      }
+    ],
+    "name": "TreeUpdatedVerifiedWithSign",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "treeId",
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -193,337 +219,44 @@
     "type": "event"
   },
   {
-    "inputs": [],
-    "name": "accessRestriction",
-    "outputs": [
-      {
-        "internalType": "contract IAccessRestriction",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [],
-    "name": "isTreeFactory",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
+    "anonymous": false,
     "inputs": [
       {
-        "internalType": "address",
-        "name": "forwarder",
-        "type": "address"
-      }
-    ],
-    "name": "isTrustedForwarder",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [],
-    "name": "lastRegualarTreeId",
-    "outputs": [
-      {
+        "indexed": false,
         "internalType": "uint256",
-        "name": "",
+        "name": "treeId",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [],
-    "name": "planterContract",
-    "outputs": [
-      {
-        "internalType": "contract IPlanter",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [],
-    "name": "planterFund",
-    "outputs": [
-      {
-        "internalType": "contract IPlanterFund",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "tempTrees",
-    "outputs": [
-      {
-        "internalType": "uint64",
-        "name": "birthDate",
-        "type": "uint64"
       },
       {
-        "internalType": "uint64",
-        "name": "plantDate",
-        "type": "uint64"
-      },
-      {
-        "internalType": "uint64",
-        "name": "countryCode",
-        "type": "uint64"
-      },
-      {
-        "internalType": "uint64",
-        "name": "otherData",
-        "type": "uint64"
-      },
-      {
+        "indexed": false,
         "internalType": "address",
         "name": "planter",
         "type": "address"
       },
       {
-        "internalType": "string",
-        "name": "treeSpecs",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [],
-    "name": "treeToken",
-    "outputs": [
-      {
-        "internalType": "contract ITree",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [],
-    "name": "treeUpdateInterval",
-    "outputs": [
-      {
+        "indexed": false,
         "internalType": "uint256",
-        "name": "",
+        "name": "nonce",
         "type": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
+    "name": "TreeVerifiedWithSign",
+    "type": "event"
   },
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "treeUpdates",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "updateSpecs",
-        "type": "string"
+        "internalType": "uint8",
+        "name": "_selector",
+        "type": "uint8"
       },
-      {
-        "internalType": "uint64",
-        "name": "updateStatus",
-        "type": "uint64"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "trees",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "planter",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "species",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint32",
-        "name": "countryCode",
-        "type": "uint32"
-      },
-      {
-        "internalType": "uint32",
-        "name": "saleType",
-        "type": "uint32"
-      },
-      {
-        "internalType": "uint64",
-        "name": "treeStatus",
-        "type": "uint64"
-      },
-      {
-        "internalType": "uint64",
-        "name": "plantDate",
-        "type": "uint64"
-      },
-      {
-        "internalType": "uint64",
-        "name": "birthDate",
-        "type": "uint64"
-      },
-      {
-        "internalType": "string",
-        "name": "treeSpecs",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [],
-    "name": "trustedForwarder",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [],
-    "name": "versionRecipient",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "pure",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_accessRestrictionAddress",
-        "type": "address"
-      }
-    ],
-    "name": "initialize",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
       {
         "internalType": "address",
         "name": "_address",
         "type": "address"
       }
     ],
-    "name": "setTrustedForwarder",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
-      }
-    ],
-    "name": "setPlanterFundAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
-      }
-    ],
-    "name": "setPlanterContractAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
-      }
-    ],
-    "name": "setTreeTokenAddress",
+    "name": "setContractAddresses",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -555,6 +288,24 @@
       }
     ],
     "name": "listTree",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "_treeIds",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "_treeSpecs",
+        "type": "string[]"
+      }
+    ],
+    "name": "listTreeBatch",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -598,27 +349,17 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_treeId",
-        "type": "uint256"
+        "internalType": "uint256[]",
+        "name": "_treeIds",
+        "type": "uint256[]"
       },
       {
-        "internalType": "string",
-        "name": "_treeSpecs",
-        "type": "string"
-      },
-      {
-        "internalType": "uint64",
-        "name": "_birthDate",
-        "type": "uint64"
-      },
-      {
-        "internalType": "uint16",
-        "name": "_countryCode",
-        "type": "uint16"
+        "internalType": "address[]",
+        "name": "_planters",
+        "type": "address[]"
       }
     ],
-    "name": "plantAssignedTree",
+    "name": "assignTreeBatch",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -626,17 +367,66 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_treeId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "_isVerified",
-        "type": "bool"
+        "components": [
+          {
+            "internalType": "address",
+            "name": "planter",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "treeId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "string",
+                "name": "treeSpecs",
+                "type": "string"
+              },
+              {
+                "internalType": "uint64",
+                "name": "birthDate",
+                "type": "uint64"
+              },
+              {
+                "internalType": "uint16",
+                "name": "countryCode",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint8",
+                "name": "v",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "r",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "s",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct ITreeFactory.PlantAssignedTreeData[]",
+            "name": "data",
+            "type": "tuple[]"
+          }
+        ],
+        "internalType": "struct ITreeFactory.VerifyAssignedTreeData[]",
+        "name": "_verifyAssignedTreeData",
+        "type": "tuple[]"
       }
     ],
-    "name": "verifyAssignedTree",
+    "name": "verifyAssignedTreeBatch",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -644,35 +434,56 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_treeId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "_treeSpecs",
-        "type": "string"
+        "components": [
+          {
+            "internalType": "address",
+            "name": "planter",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "treeId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "string",
+                "name": "treeSpecs",
+                "type": "string"
+              },
+              {
+                "internalType": "uint8",
+                "name": "v",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "r",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "s",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct ITreeFactory.UpdateData[]",
+            "name": "updateData",
+            "type": "tuple[]"
+          }
+        ],
+        "internalType": "struct ITreeFactory.VerifyUpdateData[]",
+        "name": "_verifyUpdateData",
+        "type": "tuple[]"
       }
     ],
-    "name": "updateTree",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_treeId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "_isVerified",
-        "type": "bool"
-      }
-    ],
-    "name": "verifyUpdate",
+    "name": "verifyUpdateBatch",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -787,29 +598,6 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "_treeSpecs",
-        "type": "string"
-      },
-      {
-        "internalType": "uint64",
-        "name": "_birthDate",
-        "type": "uint64"
-      },
-      {
-        "internalType": "uint16",
-        "name": "_countryCode",
-        "type": "uint16"
-      }
-    ],
-    "name": "plantTree",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint256",
         "name": "_lastRegualarTreeId",
         "type": "uint256"
@@ -823,17 +611,61 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_tempTreeId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "_isVerified",
-        "type": "bool"
+        "components": [
+          {
+            "internalType": "address",
+            "name": "planter",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+              },
+              {
+                "internalType": "string",
+                "name": "treeSpecs",
+                "type": "string"
+              },
+              {
+                "internalType": "uint64",
+                "name": "birthDate",
+                "type": "uint64"
+              },
+              {
+                "internalType": "uint16",
+                "name": "countryCode",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint8",
+                "name": "v",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "r",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "s",
+                "type": "bytes32"
+              }
+            ],
+            "internalType": "struct ITreeFactory.PlantTreeData[]",
+            "name": "data",
+            "type": "tuple[]"
+          }
+        ],
+        "internalType": "struct ITreeFactory.VerifyTreeData[]",
+        "name": "_verifyTreeData",
+        "type": "tuple[]"
       }
     ],
-    "name": "verifyTree",
+    "name": "verifyTreeBatch",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -894,6 +726,495 @@
       }
     ],
     "name": "updateTreeSpecs",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_accessRestrictionAddress",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "isTreeFactory",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lastRegualarTreeId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "treeUpdateInterval",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_treeId",
+        "type": "uint256"
+      }
+    ],
+    "name": "trees",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_treeId",
+        "type": "uint256"
+      }
+    ],
+    "name": "treeUpdates",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tempTreeId",
+        "type": "uint256"
+      }
+    ],
+    "name": "tempTrees",
+    "outputs": [
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_planter",
+        "type": "address"
+      }
+    ],
+    "name": "plantersNonce",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "nonce",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "setTrustedForwarder",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "setPlanterFundAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "setPlanterContractAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "setTreeTokenAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_treeId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_treeSpecs",
+        "type": "string"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_birthDate",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint16",
+        "name": "_countryCode",
+        "type": "uint16"
+      }
+    ],
+    "name": "plantAssignedTree",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_nonce",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_planter",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_treeId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_treeSpecs",
+        "type": "string"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_birthDate",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint16",
+        "name": "_countryCode",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "verifyAssignedTree",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_treeId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_isVerified",
+        "type": "bool"
+      }
+    ],
+    "name": "verifyAssignedTree",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_treeId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_treeSpecs",
+        "type": "string"
+      }
+    ],
+    "name": "updateTree",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_nonce",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_planter",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_treeId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_treeSpecs",
+        "type": "string"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "verifyUpdate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_treeId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_isVerified",
+        "type": "bool"
+      }
+    ],
+    "name": "verifyUpdate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_nonce",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_planter",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_treeSpecs",
+        "type": "string"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_birthDate",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint16",
+        "name": "_countryCode",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "verifyTree",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tempTreeId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_isVerified",
+        "type": "bool"
+      }
+    ],
+    "name": "verifyTree",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

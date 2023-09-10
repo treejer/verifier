@@ -1,7 +1,8 @@
 import { useCallback } from 'react'
 import { put, takeEvery, select } from 'redux-saga/effects'
 import ReduxFetchState from 'redux-fetch-state'
-import { getAccount, signMessage } from '@wagmi/core'
+import { useAccount } from 'wagmi'
+import { signMessage } from '@wagmi/core'
 import { useDispatch, useSelector } from 'react-redux'
 import apiPlugin from '../../../services/api'
 import { userSignActions } from '../userSign'
@@ -28,12 +29,11 @@ export function* userNonceSagas() {
 
 export function useGetNonce() {
   const dispatch = useDispatch()
-  const { data: userNonce, ...userNonceState } = useSelector((state) => state.userSign)
-
+  const { data: userNonce, ...userNonceState } = useSelector((state) => state.userNonce)
+  const { address } = useAccount()
   const dispatchGetNonce = useCallback(() => {
-    const { address } = getAccount()
     dispatch(actions.load({ address }))
-  }, [dispatch])
+  }, [dispatch, address])
   return { userNonce, ...userNonceState, dispatchGetNonce }
 }
 

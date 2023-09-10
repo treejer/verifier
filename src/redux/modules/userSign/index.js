@@ -12,7 +12,7 @@ export function* watchUserSign(action) {
     const response = yield apiPlugin.postData(`${base_url}/login/${address}`, {
       signature: signature,
     })
-    yield put(actions.loadSuccess(response))
+    yield put(actions.loadSuccess({ ...response, address: address }))
   } catch (e) {
     yield put(actions.loadFailure(e))
   }

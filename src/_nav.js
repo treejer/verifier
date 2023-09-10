@@ -31,15 +31,15 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Trees',
-    to: '/trees',
-    icon: <CIcon icon={cilPlant} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
     name: 'Verify List',
     to: '/verifylist',
     icon: <CIcon icon={cilListRich} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Trees',
+    to: '/trees',
+    icon: <CIcon icon={cilPlant} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,

@@ -10,7 +10,9 @@ import { userSignActions } from '../userSign'
 const { actions, actionTypes, reducer } = new ReduxFetchState('userNonce')
 
 export function* watchUserNonce(action) {
-  const { base_url } = yield select((state) => state.web3?.config || {})
+  const { base_url } = yield select((state) => {
+    return state.web3?.config || {}
+  })
   const { address } = action.payload
   try {
     const response = yield apiPlugin.getData(`${base_url}/nonce/${address}`)

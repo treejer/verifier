@@ -95,7 +95,7 @@ const Users = () => {
     } else {
       toast.error('Request failed with status code 401')
     }
-  }, [dispatchGetUsers, token])
+  }, [dispatchGetUsers, token, param])
 
   return (
     <>

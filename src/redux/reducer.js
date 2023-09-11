@@ -6,6 +6,9 @@ import { userSignReducer } from './modules/userSign'
 import { userNonceReducer } from './modules/userNonce'
 import { UsersReducer } from './modules/users'
 import { userDetailReducer } from './modules/userDetail'
+import { PlantersReducer } from './modules/requests'
+import { treeDetailReducer } from './modules/treeDetail'
+import { listReducer } from './modules/verifyList'
 
 const rootReducer = combineReducers({
   init: initReducer,
@@ -15,6 +18,9 @@ const rootReducer = combineReducers({
   userPatch: userPatchReducer,
   users: UsersReducer,
   userDetail: userDetailReducer,
+  verifyList: listReducer,
+  planters: PlantersReducer,
+  treeDetail: treeDetailReducer,
 })
 
 export default rootReducer

@@ -1,32 +1,11 @@
 import { useCallback } from 'react'
-<<<<<<< HEAD
-import { put, takeLatest, select, call } from 'redux-saga/effects'
-import ReduxFetchState from 'redux-fetch-state'
-import { setPatchData, setPatchError } from '../userPatch'
-=======
 import { put, takeEvery, select } from 'redux-saga/effects'
 import ReduxFetchState from 'redux-fetch-state'
->>>>>>> dev
 import { useDispatch, useSelector } from 'react-redux'
 import apiPlugin from '../../../services/api'
 
 const { actions, actionTypes, reducer } = new ReduxFetchState('userDetail')
 
-<<<<<<< HEAD
-const PATCH_STATUS = 'PATCH_STATUS'
-const PATCH_USER = 'PATCH_USER'
-const LOAD_USER_DETAIL = 'userDetail/LOAD'
-
-function patchUserStatus(payload) {
-  return { type: PATCH_STATUS, payload }
-}
-
-function patchUserInfo(payload) {
-  return { type: PATCH_USER, payload }
-}
-
-=======
->>>>>>> dev
 export function* watchUserDetail(action) {
   const param = action.payload
   const { base_url } = yield select((state) => state.web3?.config || {})

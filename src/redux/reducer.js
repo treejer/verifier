@@ -10,7 +10,6 @@ import { PlantersReducer } from './modules/planters'
 import { treeDetailReducer } from './modules/treeDetail'
 import { basketReducer } from './modules/verifyList'
 
-
 const rootReducer = combineReducers({
   init: initReducer,
   userSign: userSignReducer,

@@ -7,8 +7,10 @@ import { userNonceReducer } from './modules/userNonce'
 import { UsersReducer } from './modules/users'
 import { userDetailReducer } from './modules/userDetail'
 import { PlantersReducer } from './modules/requests'
-import { treeDetailReducer } from './modules/treeDetail'
+import { requestDetailReducer } from './modules/requestDetail'
 import { listReducer } from './modules/verifyList'
+import { treesReducer } from './modules/trees'
+import { treeDetailReducer } from './modules/treeDetail'
 
 const rootReducer = combineReducers({
   init: initReducer,
@@ -20,6 +22,8 @@ const rootReducer = combineReducers({
   userDetail: userDetailReducer,
   verifyList: listReducer,
   planters: PlantersReducer,
+  requestDetail: requestDetailReducer,
+  trees: treesReducer,
   treeDetail: treeDetailReducer,
 })
 

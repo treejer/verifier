@@ -41,12 +41,6 @@ const _nav = [
     to: '/trees',
     icon: <CIcon icon={cilPlant} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Setting',
-    to: '/shields',
-    icon: <CIcon icon={cilShieldAlt} customClassName="nav-icon" />,
-  },
 ]
 
 export default _nav

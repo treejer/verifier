@@ -14,7 +14,7 @@ import {
   CFormLabel,
 } from '@coreui/react'
 import { useGetVerifyList } from '../../redux/modules/verifyList'
-import { useGetTreeDetail } from '../../redux/modules/treeDetail'
+import { useGetTreeDetail } from '../../redux/modules/requestDetail'
 import { ellipsisString } from '../../utilities/hooks/useEllipsis'
 import { createMapUrl } from '../../utilities/hooks/useMap'
 import { useUserSign } from '../../redux/modules/userSign'

@@ -15,6 +15,7 @@ import {
 } from '@coreui/react'
 import { useGetVerifyList } from '../../redux/modules/verifyList'
 import { useGetTreeDetail } from '../../redux/modules/treeDetail'
+import { ellipsisString } from '../../utilities/hooks/useEllipsis'
 import { createMapUrl } from '../../utilities/hooks/useMap'
 import { useUserSign } from '../../redux/modules/userSign'
 import { toast } from 'react-toastify'
@@ -125,7 +126,13 @@ const PlantDetails = () => {
                               <CFormLabel className="pe-2 fs-6 fst-normal text-black-50">
                                 Signer:
                               </CFormLabel>
-                              {treeDetailData.request?.signer}
+                              {treeDetailData.user?.firstName + ' ' + treeDetailData?.user.lastName}
+                              <a
+                                href={`#/users/${treeDetailData.user._id}`}
+                                className="text-primary"
+                              >
+                                ({ellipsisString(treeDetailData.request.signer, 5)})
+                              </a>
                             </div>
                           </CCol>
                           <CCol className="col-6 mb-1">
@@ -177,9 +184,9 @@ const PlantDetails = () => {
                         <img
                           src={createMapUrl(
                             JSON.parse(treeDetailData.request?.treeSpecsJSON)?.location.latitude /
-                              Math.pow(10, 6),
+                            Math.pow(10, 6),
                             JSON.parse(treeDetailData.request?.treeSpecsJSON)?.location.longitude /
-                              Math.pow(10, 6),
+                            Math.pow(10, 6),
                           )}
                           alt="app"
                           className="img-fluid w-100"

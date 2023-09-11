@@ -4,7 +4,7 @@ import CIcon from '@coreui/icons-react'
 import debounce from 'lodash.debounce'
 import { toast } from 'react-toastify'
 import { cilPencil } from '@coreui/icons'
-import { useGetPlanters } from '../../redux/modules/planters'
+import { useGetPlanters } from '../../redux/modules/requests'
 import { useUserSign } from '../../redux/modules/userSign'
 import {
   CCard,

@@ -6,7 +6,7 @@ import { userPatchSagas } from './modules/userPatch'
 import { userSignSagas } from './modules/userSign'
 import { treeDetailSagas } from './modules/treeDetail'
 import { veirfyListSagas } from './modules/verifyList'
-import { plantersSagas } from './modules/planters'
+import { plantersSagas } from './modules/requests'
 import { initSagas } from './modules/init/saga'
 import { web3Saga } from './modules/web3/saga'
 

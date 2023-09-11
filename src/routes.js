@@ -5,7 +5,7 @@ const Users = React.lazy(() => import('./views/users'))
 const UsersDetail = React.lazy(() => import('./views/users/id'))
 const Requests = React.lazy(() => import('./views/requests'))
 const RequestDetail = React.lazy(() => import('./views/requests/id'))
-const VerifyList = React.lazy(() => import('./views/verify'))
+const VerifyList = React.lazy(() => import('./views/verifyList'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },

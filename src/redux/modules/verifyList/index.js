@@ -62,4 +62,4 @@ export function useGetVerifyList() {
   return { listData, ...verifyList, dispatchActionList, existInList }
 }
 
-export { reducer as basketReducer, actions as basketActions, actionTypes as basketActionTypes }
+export { reducer as listReducer, actions as basketActions, actionTypes as basketActionTypes }

@@ -177,9 +177,9 @@ const PlantDetails = () => {
                         <img
                           src={createMapUrl(
                             JSON.parse(treeDetailData.request?.treeSpecsJSON)?.location.latitude /
-                            Math.pow(10, 6),
+                              Math.pow(10, 6),
                             JSON.parse(treeDetailData.request?.treeSpecsJSON)?.location.longitude /
-                            Math.pow(10, 6),
+                              Math.pow(10, 6),
                           )}
                           alt="app"
                           className="img-fluid w-100"
@@ -194,20 +194,21 @@ const PlantDetails = () => {
                           <CCardBody>
                             {JSON.parse(treeDetailData.request?.treeSpecsJSON)?.updates.map(
                               (update, index) => (
-                                <>
-                                  <h6 className="border-bottom pb-2 mb-4">
-                                    Update:
-                                    {moment(Number(update.created_at * 1000)).format(
-                                      'MM/DD/YYYY - hh:mm a',
-                                    )}
-                                  </h6>
-                                  <img
-                                    src={update.image}
-                                    alt={update.created_at}
-                                    key={index}
-                                    className="w-100"
-                                  />
-                                </>
+                                <div key={'div' + index}>
+                                  <>
+                                    <h6 className="border-bottom pb-2 mb-4">
+                                      Update:
+                                      {moment(Number(update.created_at * 1000)).format(
+                                        'MM/DD/YYYY - hh:mm a',
+                                      )}
+                                    </h6>
+                                    <img
+                                      src={update.image}
+                                      alt={update.created_at}
+                                      className="w-100"
+                                    />
+                                  </>
+                                </div>
                               ),
                             )}
                           </CCardBody>

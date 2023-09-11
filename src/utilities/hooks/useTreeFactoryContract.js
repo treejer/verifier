@@ -24,8 +24,10 @@ const useTreeFactoryContract = () => {
         acc[signer].push(obj)
         return acc
       }, {})
+
       const input = Object.keys(grouped).map((signer) => {
-        const sorted = grouped[signer].sort((a, b) => b.nonce - a.nonce).reverse()
+        const sorted = grouped[signer].sort((a, b) => a.request.nonce - b.request.nonce)
+
         return [
           signer,
           sorted.map((obj) => {
@@ -34,6 +36,7 @@ const useTreeFactoryContract = () => {
           }),
         ]
       })
+
       verifyTreeDispatch(input, 'verifyTreeBatch')
     } else if (listData.length === 1) {
       const data = prepareInputData(listData[0], 'verifyTree')

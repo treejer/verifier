@@ -135,7 +135,7 @@ const Planters = () => {
                   Planter
                 </CTableHeaderCell>
                 <CTableHeaderCell scope="col" className="w-25">
-                  TreeSpec
+                  Nonce
                 </CTableHeaderCell>
                 <CTableHeaderCell scope="col">Created At</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Status</CTableHeaderCell>
@@ -154,7 +154,7 @@ const Planters = () => {
                           ({ellipsisString(item.request.signer, 5)})
                         </span>
                       </CTableDataCell>
-                      <CTableDataCell>{ellipsisString(item.request.treeSpecs, 9)}</CTableDataCell>
+                      <CTableDataCell>{item.request.nonce}</CTableDataCell>
                       <CTableDataCell>
                         {moment(item.request.createdAt).format('YYYY-MM-DD - hh:mm a')}
                       </CTableDataCell>

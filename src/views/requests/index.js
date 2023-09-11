@@ -83,7 +83,7 @@ const Planters = () => {
             name="signer"
             onChange={handleChange}
             aria-describedby="basic-addon3"
-            placeholder="Search by Signer"
+            placeholder="Search by Planter"
           />
         </CCol>
       </CRow>
@@ -150,9 +150,9 @@ const Planters = () => {
                       <CTableDataCell>{index + 1}</CTableDataCell>
                       <CTableDataCell>
                         {item.user.firstName + ' ' + item.user.lastName}
-                        <span className="text-primary">
+                        <a href={`#/users/${item.user._id}`} className="text-primary">
                           ({ellipsisString(item.request.signer, 5)})
-                        </span>
+                        </a>
                       </CTableDataCell>
                       <CTableDataCell>{item.request.nonce}</CTableDataCell>
                       <CTableDataCell>

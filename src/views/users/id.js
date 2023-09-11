@@ -26,7 +26,7 @@ import ChangeStatusModal from './changeStatusModal'
 import { useGetUserDetail } from '../../redux/modules/userDetail'
 import { useUserSign } from '../../redux/modules/userSign'
 import { useWeb3 } from '../../redux/modules/web3/slice'
-import { usePatchData } from '../../redux/modules/userPatch'
+import { useGetPatch } from '../../redux/modules/userPatch'
 import contryCodes from '../../utilities/contryCodes.json'
 import { toast } from 'react-toastify'
 
@@ -42,13 +42,14 @@ const UserDetailsForm = () => {
     handleGrantPlanterRole,
   } = useContract()
   const { web3 } = useWeb3()
-  const { patchData, dispatchReset } = usePatchData()
+  const { userPatchData, error: errorPatch } = useGetPatch()
   const { id } = useParams()
   const { userSign } = useUserSign()
   const [visible, setVisible] = useState(false)
   const [signRoleModalVisible, setSingRoleModalVisible] = useState(false)
   const [dataModalVisible, setDataModalVisible] = useState(false)
-  const { dispatchGetUserDetail, dispatchPatchUser, userDetailData } = useGetUserDetail()
+  const { dispatchGetUserDetail, userDetailData } = useGetUserDetail()
+  const { dispatchGetPatch } = useGetPatch()
   const token = userSign?.access_token
   const [userFlag, setUserFlag] = useState(false)
   const [onchainFlag, setOnchainFlag] = useState(false)
@@ -97,9 +98,9 @@ const UserDetailsForm = () => {
 
     setLoadingRejectBtn(false)
     setLoadingBtn(false)
-    if (patchData.error && userFlag) {
-      toast.error(patchData.error.message)
-    } else if (patchData.data && !patchData.error) {
+    if (errorPatch && userFlag) {
+      toast.error(errorPatch.message)
+    } else if (userPatchData && !errorPatch) {
       toast.success('User Data Successfully changed.')
     }
 
@@ -132,10 +133,10 @@ const UserDetailsForm = () => {
     return () => {
       if (userFlag) {
         setUserFlag(false)
-        dispatchReset()
+        dispatchGetPatch(null, 'reset')
       }
     }
-  }, [token, userDetailData, patchData, contractResponse])
+  }, [token, userDetailData, userPatchData, errorPatch, contractResponse])
 
   const handlePatchUserAction = (id, action) => {
     if (action === 'reject') {
@@ -143,7 +144,7 @@ const UserDetailsForm = () => {
     } else if (action === 'verify') {
       setLoadingBtn(true)
     }
-    dispatchPatchUser(id, action)
+    dispatchGetPatch(id, action)
     setVisible(false)
   }
 

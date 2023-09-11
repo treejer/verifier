@@ -1,12 +1,18 @@
 import { useCallback } from 'react'
+<<<<<<< HEAD
 import { put, takeLatest, select, call } from 'redux-saga/effects'
 import ReduxFetchState from 'redux-fetch-state'
 import { setPatchData, setPatchError } from '../userPatch'
+=======
+import { put, takeEvery, select } from 'redux-saga/effects'
+import ReduxFetchState from 'redux-fetch-state'
+>>>>>>> dev
 import { useDispatch, useSelector } from 'react-redux'
 import apiPlugin from '../../../services/api'
 
 const { actions, actionTypes, reducer } = new ReduxFetchState('userDetail')
 
+<<<<<<< HEAD
 const PATCH_STATUS = 'PATCH_STATUS'
 const PATCH_USER = 'PATCH_USER'
 const LOAD_USER_DETAIL = 'userDetail/LOAD'
@@ -19,6 +25,8 @@ function patchUserInfo(payload) {
   return { type: PATCH_USER, payload }
 }
 
+=======
+>>>>>>> dev
 export function* watchUserDetail(action) {
   const param = action.payload
   const { base_url } = yield select((state) => state.web3?.config || {})
@@ -54,49 +62,13 @@ export function* watchUserDetail(action) {
   }
 }
 
-function* patchUserDetail(action) {
-  const userId = action.payload.id
-  const actionType = action.payload.action
-  const { base_url } = yield select((state) => state.web3?.config || {})
-  const { access_token } = yield select((state) => state.userSign?.data || {})
-  const data = { userId: userId }
-
-  try {
-    const response = yield apiPlugin.patchData(`${base_url}/admin/${actionType}`, data, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${access_token}`,
-      },
-    })
-    yield put(setPatchData(response))
-  } catch (error) {
-    console.log('bo error', error)
-    yield put(setPatchError(error))
-  }
-}
-
-function* handleUserAction(action) {
-  switch (action.type) {
-    case PATCH_STATUS:
-      yield call(patchUserDetail, action)
-      break
-    case LOAD_USER_DETAIL:
-      yield call(watchUserDetail, action)
-      break
-    default:
-      break
-  }
-}
-
 export function* userDetailSagas() {
-  yield takeLatest([actionTypes.load, PATCH_STATUS, PATCH_USER], handleUserAction)
+  yield takeEvery(actionTypes.load, watchUserDetail)
 }
 
 export function useGetUserDetail() {
   const dispatch = useDispatch()
-  const { data: userDetailData, loading: userDetailLoading } = useSelector(
-    (state) => state.userDetail,
-  )
+  const { data: userDetailData, ...userDetail } = useSelector((state) => state.userDetail)
   const dispatchGetUserDetail = useCallback(
     (action) => {
       const id = action
@@ -105,25 +77,9 @@ export function useGetUserDetail() {
     [dispatch],
   )
 
-  const dispatchPatchUser = useCallback(
-    (id, action) => {
-      dispatch(patchUserStatus({ id: id, action: action }))
-    },
-    [dispatch],
-  )
-
-  const dispatchPatchUserInfo = useCallback(
-    (id, action) => {
-      dispatch(patchUserInfo({ id: id, action: action }))
-    },
-    [dispatch],
-  )
-
   return {
     userDetailData,
-    userDetailLoading,
-    dispatchPatchUser,
-    dispatchPatchUserInfo,
+    ...userDetail,
     dispatchGetUserDetail,
   }
 }
@@ -132,6 +88,4 @@ export {
   reducer as userDetailReducer,
   actions as userDetailActions,
   actionTypes as userDetailActionTypes,
-  patchUserStatus,
-  patchUserInfo,
 }

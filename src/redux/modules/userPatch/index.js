@@ -1,40 +1,52 @@
-import { useDispatch, useSelector } from 'react-redux'
 import { useCallback } from 'react'
-import { createSlice } from '@reduxjs/toolkit'
+import { put, takeEvery, select } from 'redux-saga/effects'
+import ReduxFetchState from 'redux-fetch-state'
+import { useDispatch, useSelector } from 'react-redux'
+import apiPlugin from '../../../services/api'
 
-const initialState = {
-  data: null,
-  error: null,
+const { actions, actionTypes, reducer } = new ReduxFetchState('userPatch')
+
+export function* watchUserPatch(action) {
+  const userId = action.payload.id
+  const actionType = action.payload.action
+  const { base_url } = yield select((state) => state.web3?.config || {})
+  const { access_token } = yield select((state) => state.userSign?.data || {})
+  const data = { userId: userId }
+  try {
+    const response = yield apiPlugin.patchData(`${base_url}/admin/${actionType}`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${access_token}`,
+      },
+    })
+    yield put(actions.loadSuccess(response))
+  } catch (error) {
+    yield put(actions.loadFailure(error))
+  }
 }
 
-const patchSlice = createSlice({
-  name: 'patchSlice',
-  initialState,
-  reducers: {
-    setPatchData: (state, action) => {
-      state.data = action.payload
-    },
-    setPatchError: (state, action) => {
-      state.error = action.payload
-    },
-    resetPatchState: (state) => {
-      state.data = null
-      state.error = null
-    },
-  },
-})
+export function* userPatchSagas() {
+  yield takeEvery(actionTypes.load, watchUserPatch)
+}
 
-export function usePatchData() {
-  const patchData = useSelector((state) => state.patchSlice)
-
+export function useGetPatch() {
   const dispatch = useDispatch()
-  const dispatchReset = useCallback(() => {
-    console.log('inja call mishe')
-    dispatch(resetPatchState())
-  }, [dispatch])
-
-  return { patchData, dispatchReset }
+  const { data: userPatchData, ...userPatch } = useSelector((state) => state.userPatch)
+  const dispatchGetPatch = useCallback(
+    (id, action) => {
+      if (action === 'reset') {
+        dispatch(actions.resetCache())
+      } else {
+        dispatch(actions.load({ action, id }))
+      }
+    },
+    [dispatch],
+  )
+  return { userPatch, ...userPatch, dispatchGetPatch }
 }
 
-export const { setPatchData, setPatchError, resetPatchState } = patchSlice.actions
-export default patchSlice.reducer
+export {
+  reducer as userPatchReducer,
+  actions as userPatchActions,
+  actionTypes as userPatchActionTypes,
+}

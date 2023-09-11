@@ -4,9 +4,9 @@ import ReduxFetchState from 'redux-fetch-state'
 import { useDispatch, useSelector } from 'react-redux'
 import apiPlugin from '../../../services/api'
 
-const { actions, actionTypes, reducer } = new ReduxFetchState('treeDetail')
+const { actions, actionTypes, reducer } = new ReduxFetchState('requestDetail')
 
-export function* watchTreeDetail(action) {
+export function* watchRequestDetail(action) {
   const { param: id, type: apiMethod, action: actionType } = action.payload
   const { base_url } = yield select((state) => state.web3?.config || {})
   const { access_token } = yield select((state) => state.userSign?.data || {})
@@ -24,13 +24,13 @@ export function* watchTreeDetail(action) {
 }
 
 export function* requestDetailSagas() {
-  yield takeLatest(actionTypes.load, watchTreeDetail)
+  yield takeLatest(actionTypes.load, watchRequestDetail)
 }
 
-export function useGetTreeDetail() {
+export function useGetRequestDetail() {
   const dispatch = useDispatch()
-  const { data: treeDetailData, ...treeDetail } = useSelector((state) => state.requestDetail)
-  const dispatchGetTreeDetail = useCallback(
+  const { data: requestDetailData, ...requestDetail } = useSelector((state) => state.requestDetail)
+  const dispatchGetRequestDetail = useCallback(
     (type, action, param) => {
       if (action === 'reset') {
         dispatch(actions.resetCache())
@@ -41,11 +41,11 @@ export function useGetTreeDetail() {
     },
     [dispatch],
   )
-  return { treeDetailData, ...treeDetail, dispatchGetTreeDetail }
+  return { requestDetailData, ...requestDetail, dispatchGetRequestDetail }
 }
 
 export {
   reducer as requestDetailReducer,
-  actions as treeDetailActions,
-  actionTypes as treeDetailActionTypes,
+  actions as requestDetailActions,
+  actionTypes as requestDetailActionTypes,
 }

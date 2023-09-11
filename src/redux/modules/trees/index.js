@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { put, takeEvery, select } from 'redux-saga/effects'
+import { put, takeEvery } from 'redux-saga/effects'
 import ReduxFetchState from 'redux-fetch-state'
 import { useDispatch, useSelector } from 'react-redux'
 import { ethers } from 'ethers'

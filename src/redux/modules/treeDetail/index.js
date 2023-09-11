@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { put, takeLatest, se, takeLatestlect } from 'redux-saga/effects'
+import { put, takeLatest } from 'redux-saga/effects'
 import ReduxFetchState from 'redux-fetch-state'
 import { useDispatch, useSelector } from 'react-redux'
 import apiPlugin from '../../../services/api'

@@ -13,7 +13,7 @@ import {
   CButton,
   CFormLabel,
 } from '@coreui/react'
-import { useGetTreeDetail } from '../../redux/modules/requestDetail'
+import { useGetTreeDetail } from '../../redux/modules/treeDetail'
 import { useUserSign } from '../../redux/modules/userSign'
 import { toast } from 'react-toastify'
 const TreeDetailsForm = () => {

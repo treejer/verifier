@@ -5,7 +5,7 @@ const Users = React.lazy(() => import('./views/users'))
 const UsersDetail = React.lazy(() => import('./views/users/id'))
 const Requests = React.lazy(() => import('./views/requests'))
 const RequestDetail = React.lazy(() => import('./views/requests/id'))
-const Trees = React.lazy(() => import('./views/tress'))
+const Trees = React.lazy(() => import('./views/trees'))
 const TreeDetail = React.lazy(() => import('./views/trees/id'))
 const VerifyList = React.lazy(() => import('./views/verifyList'))
 

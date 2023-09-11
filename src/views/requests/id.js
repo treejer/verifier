@@ -14,7 +14,7 @@ import {
   CFormLabel,
 } from '@coreui/react'
 import { useGetVerifyList } from '../../redux/modules/verifyList'
-import { useGetTreeDetail } from '../../redux/modules/requestDetail'
+import { useGetRequestDetail } from '../../redux/modules/requestDetail'
 import { ellipsisString } from '../../utilities/hooks/useEllipsis'
 import { createMapUrl } from '../../utilities/hooks/useMap'
 import { useUserSign } from '../../redux/modules/userSign'
@@ -26,24 +26,24 @@ const PlantDetails = () => {
   const { action, id } = useParams()
   const { userSign } = useUserSign()
   const {
-    dispatchGetTreeDetail,
-    treeDetailData,
+    dispatchGetRequestDetail,
+    requestDetailData,
     error: treeError,
     loading: treeLoading,
-  } = useGetTreeDetail()
+  } = useGetRequestDetail()
   const { dispatchActionList, existInList } = useGetVerifyList()
   const token = userSign?.access_token
 
   const deleteTreeAction = async () => {
-    dispatchGetTreeDetail('deleteData', action, id)
+    dispatchGetRequestDetail('deleteData', action, id)
   }
 
   const handleBasket = () => {
     if (exist) {
-      dispatchActionList('removeFromList', treeDetailData)
+      dispatchActionList('removeFromList', requestDetailData)
       toast.info('Plan remove from your verify list')
     } else {
-      dispatchActionList('addToList', treeDetailData)
+      dispatchActionList('addToList', requestDetailData)
       toast.success('Plan successfully add to your verify list')
     }
     setExist(!exist)
@@ -51,7 +51,7 @@ const PlantDetails = () => {
 
   useEffect(() => {
     if (token && !treeFlag) {
-      dispatchGetTreeDetail('getData', action, id)
+      dispatchGetRequestDetail('getData', action, id)
       existInList(id) ? setExist(true) : setExist(false)
       setTreeFlag(true)
     }
@@ -63,10 +63,10 @@ const PlantDetails = () => {
     return () => {
       if (treeFlag) {
         setTreeFlag(false)
-        dispatchGetTreeDetail('getData', 'reset', id)
+        dispatchGetRequestDetail('getData', 'reset', id)
       }
     }
-  }, [id, token, treeError, treeDetailData])
+  }, [id, token, treeError, requestDetailData])
 
   return (
     <>
@@ -81,7 +81,7 @@ const PlantDetails = () => {
           </h4>
         </CCardHeader>
         <CCardBody>
-          {treeDetailData && !treeLoading && (
+          {requestDetailData && !treeLoading && (
             <CRow>
               <CCol className="col-3 mb-5 text-center">
                 <CCol className="mt-5 d-flex flex-column align-items-center">
@@ -98,7 +98,7 @@ const PlantDetails = () => {
                     color={exist ? 'danger' : 'primary'}
                     variant="outline"
                     className="d-flex mb-2 w-75 justify-content-center"
-                    onClick={treeDetailData && handleBasket}
+                    onClick={requestDetailData && handleBasket}
                   >
                     {exist ? 'Remove From' : 'Add To'} Verify List
                   </CButton>
@@ -118,7 +118,7 @@ const PlantDetails = () => {
                               <CFormLabel className="pe-2 fs-6 fst-normal text-black-50">
                                 ID:
                               </CFormLabel>
-                              {treeDetailData.request?._id}
+                              {requestDetailData.request?._id}
                             </div>
                           </CCol>
                           <CCol className="col-6 mb-1">
@@ -126,12 +126,14 @@ const PlantDetails = () => {
                               <CFormLabel className="pe-2 fs-6 fst-normal text-black-50">
                                 Signer:
                               </CFormLabel>
-                              {treeDetailData.user?.firstName + ' ' + treeDetailData?.user.lastName}
+                              {requestDetailData.user?.firstName +
+                                ' ' +
+                                requestDetailData?.user.lastName}
                               <a
-                                href={`#/users/${treeDetailData.user._id}`}
+                                href={`#/users/${requestDetailData.user._id}`}
                                 className="text-primary"
                               >
-                                ({ellipsisString(treeDetailData.request.signer, 5)})
+                                ({ellipsisString(requestDetailData.request.signer, 5)})
                               </a>
                             </div>
                           </CCol>
@@ -140,7 +142,7 @@ const PlantDetails = () => {
                               <CFormLabel className="pe-2 fs-6 fst-normal text-black-50">
                                 Birth Date:
                               </CFormLabel>
-                              {moment(treeDetailData.request?.birthDate).format(
+                              {moment(requestDetailData.request?.birthDate).format(
                                 'MMMM DD YYYY - hh:mm a',
                               )}
                             </div>
@@ -150,7 +152,7 @@ const PlantDetails = () => {
                               <CFormLabel className="pe-2 fs-6 fst-normal text-black-50">
                                 Updated At:
                               </CFormLabel>
-                              {moment(treeDetailData.request?.updatedAt).format(
+                              {moment(requestDetailData.request?.updatedAt).format(
                                 'MMMM DD YYYY - hh:mm a',
                               )}
                             </div>
@@ -160,7 +162,7 @@ const PlantDetails = () => {
                               <CFormLabel className="pe-2 fs-6 fst-normal text-black-50">
                                 Tree Specs:
                               </CFormLabel>
-                              {treeDetailData.request?.treeSpecs}
+                              {requestDetailData.request?.treeSpecs}
                             </div>
                           </CCol>
                           <CCol className="col-6 mb-1">
@@ -168,7 +170,7 @@ const PlantDetails = () => {
                               <CFormLabel className="pe-2 fs-6 fst-normal text-black-50">
                                 Nursery:
                               </CFormLabel>
-                              {JSON.parse(treeDetailData.request?.treeSpecsJSON).nursery
+                              {JSON.parse(requestDetailData.request?.treeSpecsJSON).nursery
                                 ? 'YES'
                                 : 'NO'}
                             </div>
@@ -183,10 +185,10 @@ const PlantDetails = () => {
                         <h6 className="border-bottom pb-2 mb-4">Location</h6>
                         <img
                           src={createMapUrl(
-                            JSON.parse(treeDetailData.request?.treeSpecsJSON)?.location.latitude /
-                            Math.pow(10, 6),
-                            JSON.parse(treeDetailData.request?.treeSpecsJSON)?.location.longitude /
-                            Math.pow(10, 6),
+                            JSON.parse(requestDetailData.request?.treeSpecsJSON)?.location
+                              .latitude / Math.pow(10, 6),
+                            JSON.parse(requestDetailData.request?.treeSpecsJSON)?.location
+                              .longitude / Math.pow(10, 6),
                           )}
                           alt="app"
                           className="img-fluid w-100"
@@ -194,12 +196,12 @@ const PlantDetails = () => {
                       </CCardBody>
                     </CCard>
                   </CCol>
-                  {JSON.parse(treeDetailData.request?.treeSpecsJSON)?.updates &&
-                    JSON.parse(treeDetailData.request?.treeSpecsJSON)?.updates.length > 0 && (
+                  {JSON.parse(requestDetailData.request?.treeSpecsJSON)?.updates &&
+                    JSON.parse(requestDetailData.request?.treeSpecsJSON)?.updates.length > 0 && (
                       <CCol className="col-6">
                         <CCard className="bg-white">
                           <CCardBody>
-                            {JSON.parse(treeDetailData.request?.treeSpecsJSON)?.updates.map(
+                            {JSON.parse(requestDetailData.request?.treeSpecsJSON)?.updates.map(
                               (update, index) => (
                                 <div key={'div' + index}>
                                   <>

@@ -184,9 +184,9 @@ const PlantDetails = () => {
                         <img
                           src={createMapUrl(
                             JSON.parse(treeDetailData.request?.treeSpecsJSON)?.location.latitude /
-                            Math.pow(10, 6),
+                              Math.pow(10, 6),
                             JSON.parse(treeDetailData.request?.treeSpecsJSON)?.location.longitude /
-                            Math.pow(10, 6),
+                              Math.pow(10, 6),
                           )}
                           alt="app"
                           className="img-fluid w-100"

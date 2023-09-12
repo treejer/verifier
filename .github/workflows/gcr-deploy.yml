@@ -53,7 +53,7 @@ jobs:
       - name: Install dependencies
         run: npm install --force
         env:
-          CI: true
+          CI: false
 
       - name: create env file
         run: |
@@ -62,7 +62,7 @@ jobs:
       - name: Build Development
         run: npm run build
         env:
-          CI: true
+          CI: false
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v3

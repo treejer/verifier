@@ -23,7 +23,7 @@ export function* watchTrees(action) {
 
   let whereQuery = ''
   if (param.query.planter) {
-    whereQuery += `planter: "${param.query.planter.toLowerCase()}"`
+    whereQuery += `, planter: "${param.query.planter.toLowerCase()}"`
   }
   if (param.query.id) {
     whereQuery += `, id: ${decToHex(param.query.id)}`

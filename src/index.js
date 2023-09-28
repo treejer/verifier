@@ -5,13 +5,16 @@ import { createRoot } from 'react-dom/client'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
-import store from './redux/store'
+import { store, persistor } from './redux/store'
 import { ToastContainer } from 'react-toastify'
+import { PersistGate } from 'redux-persist/integration/react'
 import 'react-toastify/dist/ReactToastify.css'
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <ToastContainer theme="colored" autoClose={false} />
-    <App />
+    <PersistGate persistor={persistor} loading={null}>
+      <ToastContainer theme="colored" autoClose={false} />
+      <App />
+    </PersistGate>
   </Provider>,
 )
 

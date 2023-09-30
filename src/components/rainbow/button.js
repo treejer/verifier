@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import merge from 'lodash.merge'
 import { CButton } from '@coreui/react'
 import { RainbowKitProvider, ConnectButton, lightTheme } from '@rainbow-me/rainbowkit'
@@ -24,16 +24,18 @@ const treejerTheme = merge(lightTheme(), {
 const RainbowButton = () => {
   const { address } = useAccount()
   const { chain } = useNetwork()
+  const prevChainRef = useRef(chain)
   const { dispatchGetNonce, loading: userNonceLoading } = useGetNonce()
   const { dispatchRemoveToken, userSign, loading: userSignLoading } = useUserSign()
   const userToken = userSign?.access_token
   const isLoading = userNonceLoading || userSignLoading
 
   useEffect(() => {
-    if (chain) {
+    if (prevChainRef.current !== chain) {
       dispatchRemoveToken()
     }
-  }, [chain, dispatchRemoveToken])
+    prevChainRef.current = chain
+  }, [chain])
 
   const handleSignInWallet = async () => {
     try {

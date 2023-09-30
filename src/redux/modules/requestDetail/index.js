@@ -7,7 +7,6 @@ import apiPlugin from '../../../services/api'
 const { actions, actionTypes, reducer } = new ReduxFetchState('requestDetail')
 
 export function* watchRequestDetail(action) {
-  console.log('actionnnn', action)
   const { param: id, action: actionType } = action.payload
   const { base_url } = yield select((state) => state.web3?.config || {})
   const { access_token } = yield select((state) => state.userSign?.data || {})

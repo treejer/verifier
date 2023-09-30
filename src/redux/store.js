@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage' // Choose your storage type
+import storage from 'redux-persist/lib/storage'
 import createSagaMiddleware from 'redux-saga'
 import rootReducer from './reducer'
 import rootSaga from './sagas'
@@ -10,6 +10,7 @@ const sagaMiddleware = createSagaMiddleware()
 const persistConfig = {
   key: 'root',
   storage,
+  whitelist: ['init', 'userSign', 'userNonce', 'web3', 'verifyList'],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -22,6 +23,6 @@ const store = configureStore({
 
 sagaMiddleware.run(rootSaga)
 
-export const persistor = persistStore(store)
+const persistor = persistStore(store)
 
-export default store
+export { store, persistor }

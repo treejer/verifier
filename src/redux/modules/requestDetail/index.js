@@ -7,11 +7,11 @@ import apiPlugin from '../../../services/api'
 const { actions, actionTypes, reducer } = new ReduxFetchState('requestDetail')
 
 export function* watchRequestDetail(action) {
-  const { param: id, type: apiMethod, action: actionType } = action.payload
+  const { param: id, action: actionType } = action.payload
   const { base_url } = yield select((state) => state.web3?.config || {})
   const { access_token } = yield select((state) => state.userSign?.data || {})
   try {
-    const response = yield apiPlugin[apiMethod](`${base_url}/${actionType}_requests/${id}`, {
+    const response = yield apiPlugin.getData(`${base_url}/${actionType}_requests/${id}`, {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${access_token}`,
@@ -31,17 +31,22 @@ export function useGetRequestDetail() {
   const dispatch = useDispatch()
   const { data: requestDetailData, ...requestDetail } = useSelector((state) => state.requestDetail)
   const dispatchGetRequestDetail = useCallback(
-    (type, action, param) => {
+    (action, param) => {
       if (action === 'reset') {
         dispatch(actions.resetCache())
         return
       } else {
-        dispatch(actions.load({ type, action, param }))
+        dispatch(actions.load({ action, param }))
       }
     },
     [dispatch],
   )
-  return { requestDetailData, ...requestDetail, dispatchGetRequestDetail }
+
+  return {
+    requestDetailData,
+    ...requestDetail,
+    dispatchGetRequestDetail,
+  }
 }
 
 export {

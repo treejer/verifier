@@ -7,6 +7,7 @@ import { userSignSagas } from './modules/userSign'
 import { requestDetailSagas } from './modules/requestDetail'
 import { treesSagas } from './modules/trees'
 import { treeDetailSagas } from './modules/treeDetail'
+import { requestRejectSagas } from './modules/requestReject'
 import { veirfyListSagas } from './modules/verifyList'
 import { plantersSagas } from './modules/requests'
 import { initSagas } from './modules/init/saga'
@@ -26,5 +27,6 @@ export default function* rootSaga() {
     plantersSagas(),
     treesSagas(),
     treeDetailSagas(),
+    requestRejectSagas(),
   ])
 }

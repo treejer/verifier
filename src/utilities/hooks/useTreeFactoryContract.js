@@ -36,7 +36,6 @@ const useTreeFactoryContract = () => {
           }),
         ]
       })
-
       verifyTreeDispatch(input, 'verifyTreeBatch')
     } else if (listData.length === 1) {
       const data = prepareInputData(listData[0], 'verifyTree')
@@ -62,6 +61,9 @@ const useTreeFactoryContract = () => {
           args: data,
         })
       }
+
+      console.log(verifyTreeTX)
+
       const { hash } = await writeContract(verifyTreeTX)
       setContractResponse({
         hash: null,
@@ -94,8 +96,8 @@ const useTreeFactoryContract = () => {
     const signature = data.request.signature
     const nonce = data.request.nonce
     const signer = data.request.signer
-    const treeSpecs = data.request.treeSpecs
-    const birthDate = data.request.birthDate
+    const treeSpecs = data.request.treeSpecs ?? ''
+    const birthDate = data.request.birthDate ?? 0
     const countryCode = findCountryCode(data.request.countryCode)
     const { r, s, v } = ethers.utils.splitSignature(signature)
     if (method === 'verifyTree') {
